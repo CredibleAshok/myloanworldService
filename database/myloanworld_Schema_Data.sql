@@ -83,7 +83,7 @@ CREATE TABLE `customer` (
   `otherContact` varchar(25) DEFAULT NULL,
   `sex` tinyint(1) DEFAULT NULL,
   `loanAmt` DOUBLE NULL,
-  `accessKeyCode` varchar(100) NOT NULL,
+  `accessKeyCode` varchar(100) NULL,
   `validFrom` datetime DEFAULT NULL,
   `validTo` datetime DEFAULT NULL,
   `updatedDate` datetime NULL,
