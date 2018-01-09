@@ -98,7 +98,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ApplicationTypeController.cs" />
     <Compile Include="Controllers\EnquiryController.cs" />
+    <Compile Include="Dto\ApplicationTypeDto.cs" />
     <Compile Include="Dto\BaseDto.cs" />
     <Compile Include="Dto\EnquiryDetail.cs" />
     <Compile Include="Dto\ProductDto.cs" />
