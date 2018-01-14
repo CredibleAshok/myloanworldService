@@ -7,7 +7,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_NewBackgroundProfile>True</_NewBackgroundProfile>
-    <_PublishTargetUrl>C:\Users\sweekar\Documents\Visual Studio 2017\myloanworldService\SuperCheapCart\SuperCheapCart\bin\Release\PublishOutput</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\Release\PublishOutput</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/EntityFramework.dll">
@@ -26,7 +26,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/17/2016 18:28:04</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/03/2014 20:33:56</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/27/2016 14:50:24</publishTime>
@@ -107,31 +107,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/27/2016 14:50:24</publishTime>
     </File>
     <File Include="bin/SuperCheapCart.dll">
-      <publishTime>01/07/2018 20:01:23</publishTime>
+      <publishTime>01/14/2018 10:59:59</publishTime>
     </File>
     <File Include="bin/System.Net.Http.Formatting.dll">
-      <publishTime>01/28/2015 04:02:42</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="bin/System.Web.Cors.dll">
-      <publishTime>01/28/2015 04:01:46</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="bin/System.Web.Http.Cors.dll">
-      <publishTime>01/28/2015 04:03:04</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="bin/System.Web.Http.dll">
-      <publishTime>01/28/2015 04:02:54</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="bin/System.Web.Http.WebHost.dll">
       <publishTime>01/28/2015 04:03:46</publishTime>
     </File>
     <File Include="Global.asax">
-      <publishTime>01/04/2018 10:40:21</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>01/07/2018 19:38:06</publishTime>
+      <publishTime>01/13/2018 22:27:33</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/07/2018 20:01:23</publishTime>
+      <publishTime>01/14/2018 11:00:00</publishTime>
     </File>
   </ItemGroup>
 </Project>
