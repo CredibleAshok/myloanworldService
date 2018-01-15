@@ -1,5 +1,4 @@
-﻿using myloanworldService.common;
-using myloanworldService.Dto;
+﻿using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -7,36 +6,38 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
+using myloanworldService.common;
 
 namespace SuperCheapCart.Controllers
 {
-    public class CustomerController : ApiController
+    public class MenusController : ApiController
     {
         ConnectionMaker connection = new ConnectionMaker();
-        [Route("api/getCustomer")]
-        [HttpPost]
-        public IList<Customer> GetCustomer([FromBody] Customer customer)
+        [Route("api/getMenusList")]
+        [HttpGet]
+        public IList<Menus> getMenusList()
         {
-            List<Customer> customerList = new List<Customer>();
+            List<Menus> menusList = new List<Menus>();
+            string query = @"SELECT * FROM myloanworld.menus";
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.customer where name='" + customer.Name + "' and accessKeyCode ='" + customer.AccessKeyCode + "'", conn))
+                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                customerList.Add(new Customer()
+                                menusList.Add(new Menus()
                                 {
-                                    CustomerId = Convert.ToInt16(reader["customerId"]),
+                                    MenuId = Convert.ToInt16(reader["menuId"]),
                                     Name = reader["name"].ToString(),
-                                    EnquiryId = reader["enquiryId"].ToString(),
-                                    HomeAddress = reader["homeAddress"].ToString(),
-                                    OfficeAddress = reader["officeAddress"].ToString(),
-                                    AccessKeyCode = reader["accessKeyCode"].ToString()
+                                    //SortOrder = Convert.ToInt16(reader["sortOrder"]),
+                                    //ParentMenu = Convert.ToInt16(reader["parentMenu"]),
+                                    Icon = reader["icon"].ToString(),
+                                    Sref = reader["sref"].ToString()
                                 });
                             }
                         }
@@ -47,7 +48,7 @@ namespace SuperCheapCart.Controllers
             catch (MySqlException ex)
             {
             }
-            return customerList;
+            return menusList;
         }
     }
 }

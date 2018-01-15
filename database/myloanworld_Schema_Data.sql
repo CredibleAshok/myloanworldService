@@ -10,6 +10,25 @@
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`applicationTypeId`)) ENGINE = InnoDB;
 
+CREATE TABLE `myloanworld`.`menus` ( `menuId` INT NOT NULL AUTO_INCREMENT , 
+`name` VARCHAR(100) NOT NULL ,
+`sortOrder` int NULL ,
+`parentMenu` int NULL ,
+`isManagement` bool not NULL ,
+`href` VARCHAR(100) NULL ,
+`icon` VARCHAR(100) NULL ,
+`sref` VARCHAR(100) NULL ,
+`localhref` VARCHAR(100) NULL ,
+`validFrom` DATETIME NULL , 
+`validTo` DATETIME NULL , 
+`updatedDate` datetime NULL,
+`updatedBy` varchar(100) NULL,
+PRIMARY KEY (`menuId`)) ENGINE = InnoDB;
+
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('My Profile', '1', 'home', 'profile');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Applications', '1', 'home', 'allApplications');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
+
 INSERT INTO `applicationType` (`name`, 
 `descText`, 
 `href`, 

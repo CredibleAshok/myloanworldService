@@ -1,4 +1,5 @@
-﻿using myloanworldService.Dto;
+﻿using myloanworldService.common;
+using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace SuperCheapCart.Controllers
 {
     public class ApplicationDetailController : ApiController
     {
-        public string MyConnectionString = ConfigurationManager.AppSettings["Environment"] == "local" ? ConfigurationManager.AppSettings["LocalMYSqlConnectionString"] : ConfigurationManager.AppSettings["MYSqlConnectionString"];
+        ConnectionMaker connection = new ConnectionMaker();
         [Route("api/getApplicationById")]
         [HttpGet]
         public IList<ApplicationDetail> getApplication([FromBody] int? applicationId)
@@ -35,7 +36,7 @@ namespace SuperCheapCart.Controllers
             
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))

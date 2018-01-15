@@ -11,12 +11,13 @@ using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
 using MySql.Data;
 using System.Configuration;
+using myloanworldService.common;
 
 namespace myloanworldService.Controllers
 { 
     public class EnquiryController : ApiController
     {
-        public string MyConnectionString = ConfigurationManager.AppSettings["Environment"] =="local"? ConfigurationManager.AppSettings["LocalMYSqlConnectionString"] : ConfigurationManager.AppSettings["MYSqlConnectionString"];
+        ConnectionMaker connection = new ConnectionMaker();
 
         [Route("api/getEnquiry")]
         [HttpGet]
@@ -25,7 +26,7 @@ namespace myloanworldService.Controllers
             List<EnquiryDetailDto> enquiryList = new List<EnquiryDetailDto>();
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.enquirydetail", conn))
@@ -60,7 +61,7 @@ namespace myloanworldService.Controllers
         {
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
                     using (MySqlCommand cmd = new MySqlCommand("INSERT INTO `myloanworld`.`enquirydetail` (`name`,`contactNumber`,`loanAmt`,`comments`) VALUES (@valueToName,@valueToContactNumber,@valueToLoanAmt,@valueToComments);", conn))

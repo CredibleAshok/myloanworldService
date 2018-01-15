@@ -6,12 +6,13 @@ using System.Web.Http;
 using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using myloanworldService.common;
 
 namespace myloanworldService.Controllers
 {
     public class ApplicationTypeController : ApiController
     {
-        public string MyConnectionString = ConfigurationManager.AppSettings["Environment"] == "local" ? ConfigurationManager.AppSettings["LocalMYSqlConnectionString"] : ConfigurationManager.AppSettings["MYSqlConnectionString"];
+        ConnectionMaker connection = new ConnectionMaker();
 
         [Route("api/getApplicationType")]
         [HttpGet]
@@ -20,7 +21,7 @@ namespace myloanworldService.Controllers
             List<ApplicationTypeDto> enquiryList = new List<ApplicationTypeDto>();
             try
             {
-                using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.applicationType", conn))
