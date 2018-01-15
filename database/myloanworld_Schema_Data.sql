@@ -1,4 +1,7 @@
-CREATE TABLE `myloanworld`.`applicationType` ( `applicationTypeId` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(100) NOT NULL ,
+
+
+CREATE TABLE `myloanworld`.`applicationType` ( `applicationTypeId` INT NOT NULL AUTO_INCREMENT , 
+`name` VARCHAR(100) NOT NULL ,
 `descText` VARCHAR(1000) NULL ,
 `href` VARCHAR(100) NULL ,
 `icon` VARCHAR(100) NULL ,
@@ -77,13 +80,21 @@ INSERT INTO `applicationType` (`name`,
 '2018-01-08 00:00:00', 
 NULL);
 
-CREATE TABLE `myloanworld`.`applicationStatus` ( `applicationStatusId` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(100) NOT NULL , 
+CREATE TABLE `myloanworld`.`applicationStatus` ( 
+`applicationStatusId` INT NOT NULL AUTO_INCREMENT , 
+`name` VARCHAR(100) NOT NULL , 
 `validFrom` DATETIME NULL, 
 `validTo` DATETIME NULL, 
 PRIMARY KEY (`applicationStatusId`)) ENGINE = InnoDB;
 
 
-CREATE TABLE `myloanworld`.`applicationDetail` ( `applicationId` INT NOT NULL AUTO_INCREMENT , `applicationStatusId` INT NOT NULL, `applicationTypeId` INT NOT NULL, `validTo` DATETIME NULL, `validFrom` DATETIME NULL , `creationDate` DATETIME NOT NULL, 
+CREATE TABLE `myloanworld`.`applicationDetail` ( 
+`applicationId` INT NOT NULL AUTO_INCREMENT , 
+`applicationStatusId` INT NOT NULL, 
+`applicationTypeId` INT NOT NULL, 
+`validTo` DATETIME NULL, 
+`validFrom` DATETIME NULL , 
+`creationDate` DATETIME NOT NULL, 
 PRIMARY KEY (`applicationId`),
 CONSTRAINT fk_applicationStatus FOREIGN KEY (`applicationStatusId`)
   REFERENCES applicationStatus(`applicationStatusId`),
@@ -126,7 +137,8 @@ CONSTRAINT fk_refferId FOREIGN KEY (`refferId`)
 CREATE TABLE `myloanworld`.`roleType` ( 
 `roleTypeId` INT NOT NULL AUTO_INCREMENT , 
 `featureName` VARCHAR(100) NOT NULL , 
-`validTo` DATETIME NULL, `validFrom` DATETIME NULL ,
+`validTo` DATETIME NULL, 
+`validFrom` DATETIME NULL ,
 `updatedDate` datetime NULL,
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`roleTypeId`)) ENGINE = InnoDB;
@@ -135,7 +147,8 @@ CREATE TABLE `myloanworld`.`customerRoleType` (
 `customerRoleTypeId` INT NOT NULL AUTO_INCREMENT , 
 `roleTypeId` INT NOT NULL, 
 `customerId` INT NOT NULL, 
-`validTo` DATETIME NULL, `validFrom` DATETIME NULL ,
+`validTo` DATETIME NULL, 
+`validFrom` DATETIME NULL ,
 `updatedDate` datetime NULL,
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`customerRoleTypeId`),
@@ -160,8 +173,8 @@ INSERT INTO `applicationDetail` (`applicationStatusId`, `applicationTypeId`, `va
 
 INSERT INTO `roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('View customer Profile', NULL, NULL), ('Modify customer Profile', NULL, NULL);
 
-INSERT INTO `enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '', NULL);
-INSERT INTO `enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '', 1);
+INSERT INTO `enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
+INSERT INTO `enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
 
 INSERT INTO `customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '1', NULL, NULL, NULL, NULL);
 INSERT INTO `customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '2', NULL, NULL, NULL, NULL);
