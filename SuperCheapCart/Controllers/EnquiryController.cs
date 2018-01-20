@@ -19,25 +19,26 @@ namespace myloanworldService.Controllers
     {
         ConnectionMaker connection = new ConnectionMaker();
 
-        [Route("api/getEnquiry")]
+        [Route("api/getAllEnquiry")]
         [HttpGet]
-        public IList<EnquiryDetailDto> GetEnquiry()
+        public IList<Enquiry> getAllEnquiry([FromUri] Enquiry searchFilter)
         {
-            List<EnquiryDetailDto> enquiryList = new List<EnquiryDetailDto>();
+            string conditons = makeQuery(searchFilter);
+            List<Enquiry> enquiryList = new List<Enquiry>();
             try
             {
                 using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.enquirydetail", conn))
+                    using (MySqlCommand cmd = new MySqlCommand(("SELECT * FROM myloanworld.enquiry " + conditons), conn))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                enquiryList.Add(new EnquiryDetailDto()
+                                enquiryList.Add(new Enquiry()
                                 {
-                                    IdenquiryDetailId = Convert.ToInt16(reader["idenquiryDetailId"]),
+                                    EnquiryId = Convert.ToInt16(reader["enquiryId"]),
                                     Name = reader["name"].ToString(),
                                     ContactNumber = reader["contactNumber"].ToString(),
                                     LoanAmt = Convert.ToInt16(reader["loanAmt"]),
@@ -55,9 +56,39 @@ namespace myloanworldService.Controllers
             return enquiryList;
         }
 
+        private string makeQuery(Enquiry searchFilter) {
+            IList<string> conditionList = new List<string>();
+            string query = "where ";
+            foreach(var prop in searchFilter.GetType().GetProperties())
+            {
+                if(prop.GetValue(searchFilter, null) != null)
+                {
+                    if((prop.PropertyType.FullName == "System.Int32") && ((int)prop.GetValue(searchFilter, null) != 0))
+                    {
+                        conditionList.Add(prop.Name + "=" + prop.GetValue(searchFilter, null));
+                    }else if((prop.PropertyType.FullName == "System.String") && (prop.GetValue(searchFilter, null).ToString() != ""))
+                    {
+                        conditionList.Add(prop.Name + "='" + prop.GetValue(searchFilter, null) + "'");
+                    }
+                }
+            }
+            if (conditionList.Count >1)
+            {
+                foreach(string condition in conditionList)
+                {
+                    query += condition + " and ";
+                }
+            }else if (conditionList.Count == 1)
+            {
+                query += conditionList[0];
+            }
+            string queryWithoutEnd = query.Substring(0, query.LastIndexOf(" and "));
+            return queryWithoutEnd;
+        }
+
         [Route("api/saveEnquiry")]
         [HttpPost]
-        public IList<EnquiryDetailDto> SaveEnquiry(EnquiryDetailDto enquiry)
+        public IList<Enquiry> SaveEnquiry(Enquiry enquiry)
         {
             try
             {
@@ -78,7 +109,7 @@ namespace myloanworldService.Controllers
             catch (MySqlException ex)
             {
             }
-            return GetEnquiry();
+            return getAllEnquiry(null);
         }
     }
 }

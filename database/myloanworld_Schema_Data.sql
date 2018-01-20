@@ -31,7 +31,7 @@ PRIMARY KEY (`menuId`)) ENGINE = InnoDB;
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('My Profile', '1', 'home', 'profile');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Applications', '1', 'home', 'allApplications');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
-
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Enquiries', '1', 'home', 'enquiries');
 INSERT INTO `applicationType` (`name`, 
 `descText`, 
 `href`, 
@@ -122,6 +122,17 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB;
 
 
+CREATE TABLE `applicationHistory` (
+  `applicationHistoryId` INT NOT NULL AUTO_INCREMENT,
+  `applicationId` int NOT NULL,
+  `applicationStatusId` int NULL,
+  `comments` varchar(200) DEFAULT NULL,
+  `creationDate` datetime DEFAULT NULL,
+  `createdBy` varchar(100) NULL,
+  PRIMARY KEY (`applicationHistoryId`)
+) ENGINE=InnoDB;
+
+
 CREATE TABLE `enquiry` ( 
 `enquiryId` INT NOT NULL AUTO_INCREMENT, 
 `name` varchar(100) NOT NULL, 
@@ -157,6 +168,8 @@ CONSTRAINT fk_customerRoleType_roleTypeId FOREIGN KEY (`roleTypeId`)
 CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
   REFERENCES customer(`customerId`)) ENGINE = InnoDB;
 
+
+
 INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', '2018-01-08 00:00:00', NULL);
 INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Home Loan', '2018-01-08 00:00:00', NULL);
 INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Personal Loan', '2018-01-08 00:00:00', NULL);
@@ -166,9 +179,19 @@ INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Vehicle 
 INSERT INTO `customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 INSERT INTO `customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 
+INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '1', 'New', '2018-01-08 00:00:00', 'Ashok');
+INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'Stage 1', '2018-01-08 00:00:00', 'Ashok 1');
+INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '3', 'Stage 2', '2018-01-08 00:00:00', 'Ashok 2');
+INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '4', 'Stage 3', '2018-01-08 00:00:00', 'Ashok 3');
+INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '5', 'Stage 4', '2018-01-08 00:00:00', 'Ashok 3');
+
 
 INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', NULL, NULL);
-INSERT INTO `applicationStatus` (`name`, `validFrom`, `validTo`) VALUES ('New', NULL, NULL);
+INSERT INTO `applicationStatus` (`name`) VALUES ('New');
+INSERT INTO `applicationstatus` (`name`) VALUES ('Stage3');
+INSERT INTO `applicationstatus` (`name`) VALUES ('Stage 4');
+INSERT INTO `applicationstatus` (`name`) VALUES ('Stage 5');
+
 INSERT INTO `applicationDetail` (`applicationStatusId`, `applicationTypeId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, NULL, '2018-01-08 00:00:00');
 
 INSERT INTO `roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('View customer Profile', NULL, NULL), ('Modify customer Profile', NULL, NULL);
