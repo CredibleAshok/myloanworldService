@@ -179,18 +179,18 @@ INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Vehicle 
 INSERT INTO `customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 INSERT INTO `customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 
-INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '1', 'New', '2018-01-08 00:00:00', 'Ashok');
-INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'Stage 1', '2018-01-08 00:00:00', 'Ashok 1');
-INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '3', 'Stage 2', '2018-01-08 00:00:00', 'Ashok 2');
-INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '4', 'Stage 3', '2018-01-08 00:00:00', 'Ashok 3');
-INSERT INTO `myloanworld`.`applicationhistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '5', 'Stage 4', '2018-01-08 00:00:00', 'Ashok 3');
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '1', 'New', '2018-01-08 00:00:00', 'Ashok');
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'Stage 1', '2018-01-08 00:00:00', 'Ashok 1');
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '3', 'Stage 2', '2018-01-08 00:00:00', 'Ashok 2');
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '4', 'Stage 3', '2018-01-08 00:00:00', 'Ashok 3');
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '5', 'Stage 4', '2018-01-08 00:00:00', 'Ashok 3');
 
 
 INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', NULL, NULL);
 INSERT INTO `applicationStatus` (`name`) VALUES ('New');
-INSERT INTO `applicationstatus` (`name`) VALUES ('Stage3');
-INSERT INTO `applicationstatus` (`name`) VALUES ('Stage 4');
-INSERT INTO `applicationstatus` (`name`) VALUES ('Stage 5');
+INSERT INTO `applicationStatus` (`name`) VALUES ('Stage3');
+INSERT INTO `applicationStatus` (`name`) VALUES ('Stage 4');
+INSERT INTO `applicationStatus` (`name`) VALUES ('Stage 5');
 
 INSERT INTO `applicationDetail` (`applicationStatusId`, `applicationTypeId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, NULL, '2018-01-08 00:00:00');
 
