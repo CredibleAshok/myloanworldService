@@ -22,16 +22,16 @@ namespace SuperCheapCart.Controllers
             if (applicationId != null)
             {
                 query = @"SELECT apd.applicationId, apd.applicationStatusId, aps.name as 'applicationStatus', apd.applicationTypeId, apt.name as 'applicationType'
-                            FROM myloanworld.applicationdetail apd
-                            join myloanworld.applicationstatus aps on aps.applicationStatusId = apd.applicationStatusId
-                            join myloanworld.applicationtype apt on apt.applicationTypeId = apd.applicationTypeId where applicationId='" + applicationId + "'"; 
+                            FROM myloanworld.applicationDetail apd
+                            join myloanworld.applicationStatus aps on aps.applicationStatusId = apd.applicationStatusId
+                            join myloanworld.applicationType apt on apt.applicationTypeId = apd.applicationTypeId where applicationId='" + applicationId + "'"; 
             }
             else
             {
                 query = @"SELECT apd.applicationId, apd.applicationStatusId, aps.name as 'applicationStatus', apd.applicationTypeId, apt.name as 'applicationType'
-                            FROM myloanworld.applicationdetail apd
-                            join myloanworld.applicationstatus aps on aps.applicationStatusId = apd.applicationStatusId
-                            join myloanworld.applicationtype apt on apt.applicationTypeId = apd.applicationTypeId";
+                            FROM myloanworld.applicationDetail apd
+                            join myloanworld.applicationStatus aps on aps.applicationStatusId = apd.applicationStatusId
+                            join myloanworld.applicationType apt on apt.applicationTypeId = apd.applicationTypeId";
             }
             
             try

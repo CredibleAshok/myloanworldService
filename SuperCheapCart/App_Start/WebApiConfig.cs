@@ -25,8 +25,10 @@ namespace myloanworldService
             config.Formatters.JsonFormatter
             .SerializerSettings
             .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-            
-            config.EnableCors(new EnableCorsAttribute(origins: ConfigurationManager.AppSettings["allowedDomain"].ToString(), headers: "*", methods: "*"));
+            //var ourWebsiteOrigin = ConfigurationManager.AppSettings["allowedDomain"].ToString();
+            //This above method does't work because of slashes in the url. need to find a way out
+            //config.EnableCors(new EnableCorsAttribute(origins: ourWebsiteOrigin, headers: "POST, GET, OPTIONS, DELETE, PUT", methods: "*"));
+            config.EnableCors(new EnableCorsAttribute(origins: "*", headers: "*", methods: "*"));
         }
     }
 }

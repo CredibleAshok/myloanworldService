@@ -23,8 +23,8 @@ namespace SuperCheapCart.Controllers
                 query = @"SELECT aph.applicationId, aph.applicationStatusId, 
                             aps.name as 'applicationStatus',
                             aph.comments, aph.creationDate, aph.createdBy
-                            FROM myloanworld.applicationhistory aph
-                            join myloanworld.applicationstatus aps on aps.applicationStatusId = aph.applicationStatusId
+                            FROM myloanworld.applicationHistory aph
+                            join myloanworld.applicationStatus aps on aps.applicationStatusId = aph.applicationStatusId
                             where aph.applicationId = '" + applicationId + "'";
             }
 

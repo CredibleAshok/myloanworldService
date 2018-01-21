@@ -23,7 +23,12 @@ namespace myloanworldService.Controllers
         [HttpGet]
         public IList<Enquiry> getAllEnquiry([FromUri] Enquiry searchFilter)
         {
-            string conditons = makeQuery(searchFilter);
+            string conditons = "";
+            if (searchFilter != null)
+            {
+                conditons = makeQuery(searchFilter);
+            }
+            
             List<Enquiry> enquiryList = new List<Enquiry>();
             try
             {

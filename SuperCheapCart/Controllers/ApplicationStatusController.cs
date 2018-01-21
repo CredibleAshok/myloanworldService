@@ -17,7 +17,7 @@ namespace SuperCheapCart.Controllers
         public IList<ApplicationStatus> getApplicationStatus()
         {
             List<ApplicationStatus> applicationStatusList = new List<ApplicationStatus>();
-            string query = "SELECT * FROM myloanworld.applicationstatus";
+            string query = "SELECT * FROM myloanworld.applicationStatus";
             
             try
             {
