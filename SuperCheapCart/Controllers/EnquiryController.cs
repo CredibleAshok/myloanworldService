@@ -100,12 +100,13 @@ namespace myloanworldService.Controllers
                 using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO `myloanworld`.`enquirydetail` (`name`,`contactNumber`,`loanAmt`,`comments`) VALUES (@valueToName,@valueToContactNumber,@valueToLoanAmt,@valueToComments);", conn))
+                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO `myloanworld`.`enquiry` (`name`,`contactNumber`,`loanAmt`,`comments`,`creationDate`) VALUES (@valueToName,@valueToContactNumber,@valueToLoanAmt,@valueToComments, valueToCreationDate);", conn))
                     {
                         cmd.Parameters.AddWithValue("@valueToName", enquiry.Name);
                         cmd.Parameters.AddWithValue("@valueToContactNumber", enquiry.ContactNumber);
                         cmd.Parameters.AddWithValue("@valueToLoanAmt", enquiry.LoanAmt);
                         cmd.Parameters.AddWithValue("@valueToComments", enquiry.Comments);
+                        cmd.Parameters.AddWithValue("@valueToCreationDate", DateTime.Now);
                         cmd.ExecuteNonQuery();
                     }
                     conn.Close();
