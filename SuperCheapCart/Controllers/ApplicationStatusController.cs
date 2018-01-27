@@ -16,12 +16,12 @@ namespace SuperCheapCart.Controllers
         [HttpGet]
         public IList<ApplicationStatus> getApplicationStatus()
         {
+            throw new ArgumentNullException();
             List<ApplicationStatus> applicationStatusList = new List<ApplicationStatus>();
             string query = "SELECT * FROM myloanworld.applicationStatus";
             
-            try
-            {
-                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
                 {
                     conn.Open();
                     using (MySqlCommand cmd = new MySqlCommand(query, conn))
@@ -40,10 +40,6 @@ namespace SuperCheapCart.Controllers
                     }
                     conn.Close();
                 }
-            }
-            catch (MySqlException ex)
-            {
-            }
             return applicationStatusList;
         }
     }

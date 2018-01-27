@@ -1,9 +1,11 @@
-﻿using System;
+﻿using SuperCheapCart.Exception;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.ExceptionHandling;
 
 namespace myloanworldService
 {
@@ -36,6 +38,7 @@ namespace myloanworldService
             {
                 config.EnableCors(new EnableCorsAttribute(origins: @"http://localhost", headers: "*", methods: "*"));
             }
+            config.Services.Replace(typeof(IExceptionHandler), new OopsExceptionHandler());
         }
     }
 }

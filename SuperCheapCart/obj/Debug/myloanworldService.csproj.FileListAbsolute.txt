@@ -44,6 +44,7 @@ C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\Newtonso
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\System.Net.Http.Formatting.xml
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\System.Web.Http.xml
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\System.Web.Http.WebHost.xml
-C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\obj\Debug\myloanworldService.csprojResolveAssemblyReference.cache
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\obj\Debug\SuperCheapCart.dll
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\obj\Debug\SuperCheapCart.pdb
+C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\log4net.dll
+C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\log4net.xml

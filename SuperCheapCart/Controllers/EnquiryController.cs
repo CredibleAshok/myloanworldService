@@ -14,7 +14,7 @@ using System.Configuration;
 using myloanworldService.common;
 
 namespace myloanworldService.Controllers
-{ 
+{
     public class EnquiryController : ApiController
     {
         ConnectionMaker connection = new ConnectionMaker();
@@ -28,62 +28,59 @@ namespace myloanworldService.Controllers
             {
                 conditons = makeQuery(searchFilter);
             }
-            
+
             List<Enquiry> enquiryList = new List<Enquiry>();
-            try
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand(("SELECT * FROM myloanworld.enquiry " + conditons), conn))
                 {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(("SELECT * FROM myloanworld.enquiry " + conditons), conn))
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            enquiryList.Add(new Enquiry()
                             {
-                                enquiryList.Add(new Enquiry()
-                                {
-                                    EnquiryId = Convert.ToInt16(reader["enquiryId"]),
-                                    Name = reader["name"].ToString(),
-                                    ContactNumber = reader["contactNumber"].ToString(),
-                                    LoanAmt = Convert.ToInt16(reader["loanAmt"]),
-                                    Comments = reader["comments"].ToString()
-                                });
-                            }
+                                EnquiryId = Convert.ToInt16(reader["enquiryId"]),
+                                Name = reader["name"].ToString(),
+                                ContactNumber = reader["contactNumber"].ToString(),
+                                LoanAmt = Convert.ToInt16(reader["loanAmt"]),
+                                Comments = reader["comments"].ToString()
+                            });
                         }
                     }
-                    conn.Close();
                 }
-            }
-            catch (MySqlException ex)
-            {
+                conn.Close();
             }
             return enquiryList;
         }
 
-        private string makeQuery(Enquiry searchFilter) {
+        private string makeQuery(Enquiry searchFilter)
+        {
             IList<string> conditionList = new List<string>();
             string query = "where ";
-            foreach(var prop in searchFilter.GetType().GetProperties())
+            foreach (var prop in searchFilter.GetType().GetProperties())
             {
-                if(prop.GetValue(searchFilter, null) != null)
+                if (prop.GetValue(searchFilter, null) != null)
                 {
-                    if((prop.PropertyType.FullName == "System.Int32") && ((int)prop.GetValue(searchFilter, null) != 0))
+                    if ((prop.PropertyType.FullName == "System.Int32") && ((int)prop.GetValue(searchFilter, null) != 0))
                     {
                         conditionList.Add(prop.Name + "=" + prop.GetValue(searchFilter, null));
-                    }else if((prop.PropertyType.FullName == "System.String") && (prop.GetValue(searchFilter, null).ToString() != ""))
+                    }
+                    else if ((prop.PropertyType.FullName == "System.String") && (prop.GetValue(searchFilter, null).ToString() != ""))
                     {
                         conditionList.Add(prop.Name + "='" + prop.GetValue(searchFilter, null) + "'");
                     }
                 }
             }
-            if (conditionList.Count >1)
+            if (conditionList.Count > 1)
             {
-                foreach(string condition in conditionList)
+                foreach (string condition in conditionList)
                 {
                     query += condition + " and ";
                 }
-            }else if (conditionList.Count == 1)
+            }
+            else if (conditionList.Count == 1)
             {
                 query += conditionList[0];
             }
@@ -95,25 +92,19 @@ namespace myloanworldService.Controllers
         [HttpPost]
         public IList<Enquiry> SaveEnquiry(Enquiry enquiry)
         {
-            try
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO `myloanworld`.`enquiry` (`name`,`contactNumber`,`loanAmt`,`comments`,`creationDate`) VALUES (@valueToName,@valueToContactNumber,@valueToLoanAmt,@valueToComments, @valueToCreationDate);", conn))
                 {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO `myloanworld`.`enquiry` (`name`,`contactNumber`,`loanAmt`,`comments`,`creationDate`) VALUES (@valueToName,@valueToContactNumber,@valueToLoanAmt,@valueToComments, valueToCreationDate);", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@valueToName", enquiry.Name);
-                        cmd.Parameters.AddWithValue("@valueToContactNumber", enquiry.ContactNumber);
-                        cmd.Parameters.AddWithValue("@valueToLoanAmt", enquiry.LoanAmt);
-                        cmd.Parameters.AddWithValue("@valueToComments", enquiry.Comments);
-                        cmd.Parameters.AddWithValue("@valueToCreationDate", DateTime.Now);
-                        cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
+                    cmd.Parameters.AddWithValue("@valueToName", enquiry.Name);
+                    cmd.Parameters.AddWithValue("@valueToContactNumber", enquiry.ContactNumber);
+                    cmd.Parameters.AddWithValue("@valueToLoanAmt", enquiry.LoanAmt);
+                    cmd.Parameters.AddWithValue("@valueToComments", enquiry.Comments);
+                    cmd.Parameters.AddWithValue("@valueToCreationDate", DateTime.Now);
+                    cmd.ExecuteNonQuery();
                 }
-            }
-            catch (MySqlException ex)
-            {
+                conn.Close();
             }
             return getAllEnquiry(null);
         }
