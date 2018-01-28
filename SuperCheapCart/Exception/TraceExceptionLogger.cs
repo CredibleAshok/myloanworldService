@@ -7,11 +7,27 @@ using System.Web.Http.ExceptionHandling;
 
 namespace SuperCheapCart.Exception
 {
-    public class TraceExceptionLogger : ExceptionLogger
+    public class TraceExceptionLogger: ExceptionLogger
     {
         public override void LogCore(ExceptionLoggerContext context)
         {
-            Trace.TraceError(context.ExceptionContext.Exception.ToString());
+            //base.Log(context);
+            if(context.ExceptionContext != null)
+            {
+                Trace.TraceError(context.ExceptionContext.Exception.ToString());
+            }
+            else
+            {
+                if(context.Exception != null)
+                {
+                    Trace.TraceError(context.Exception.ToString());
+                }
+            }
+        }
+        public override bool ShouldLog(ExceptionLoggerContext context)
+        {
+            //return base.ShouldLog(context);
+            return true;
         }
     }
 }
