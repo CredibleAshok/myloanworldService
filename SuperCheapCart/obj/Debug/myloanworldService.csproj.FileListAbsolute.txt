@@ -48,4 +48,3 @@ C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\obj\Debug\Su
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\obj\Debug\SuperCheapCart.pdb
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\log4net.dll
 C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\bin\log4net.xml
-C:\Users\sweekar\Documents\GitHub\myloanworldService\SuperCheapCart\obj\Debug\myloanworldService.csprojResolveAssemblyReference.cache

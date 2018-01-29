@@ -10,9 +10,9 @@ namespace myloanworldService.Dto
         public int EnquiryId { get; set; }
         public string Name { get; set; }
         public string ContactNumber { get; set; }
-        public int LoanAmt { get; set; }
+        public int? LoanAmt { get; set; }
         public string Comments { get; set; }
         public DateTime CreationDate { get; set; }
-        public int refferId { get; set; }
+        public int? refferId { get; set; }
     }
 }
