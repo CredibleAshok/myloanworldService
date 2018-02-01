@@ -77,14 +77,14 @@ namespace myloanworldService.Controllers
             {
                 foreach (string condition in conditionList)
                 {
-                    query += condition + " and ";
+                    query += condition + " or ";
                 }
             }
             else if (conditionList.Count == 1)
             {
                 query += conditionList[0];
             }
-            string queryWithoutEnd = query.Substring(0, query.LastIndexOf(" and "));
+            string queryWithoutEnd = query.Substring(0, query.LastIndexOf(" or "));
             return queryWithoutEnd;
         }
 
