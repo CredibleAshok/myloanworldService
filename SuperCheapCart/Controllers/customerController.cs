@@ -18,36 +18,63 @@ namespace SuperCheapCart.Controllers
         public IList<Customer> GetCustomer([FromBody] Customer customer)
         {
             List<Customer> customerList = new List<Customer>();
-            try
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.customer where name='" + customer.Name + "' and accessKeyCode ='" + customer.AccessKeyCode + "'", conn))
                 {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.customer where name='" + customer.Name + "' and accessKeyCode ='" + customer.AccessKeyCode + "'", conn))
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            customerList.Add(new Customer()
                             {
-                                customerList.Add(new Customer()
-                                {
-                                    CustomerId = Convert.ToInt16(reader["customerId"]),
-                                    Name = reader["name"].ToString(),
-                                    EnquiryId = reader["enquiryId"].ToString(),
-                                    HomeAddress = reader["homeAddress"].ToString(),
-                                    OfficeAddress = reader["officeAddress"].ToString(),
-                                    AccessKeyCode = reader["accessKeyCode"].ToString()
-                                });
-                            }
+                                CustomerId = Convert.ToInt16(reader["customerId"]),
+                                Name = reader["name"].ToString(),
+                                EnquiryId = reader["enquiryId"].ToString(),
+                                HomeAddress = reader["homeAddress"].ToString(),
+                                OfficeAddress = reader["officeAddress"].ToString(),
+                                AccessKeyCode = reader["accessKeyCode"].ToString()
+                            });
                         }
                     }
-                    conn.Close();
                 }
-            }
-            catch (MySqlException ex)
-            {
+                conn.Close();
             }
             return customerList;
+        }
+        
+        [Route("api/saveApplication")]
+        [HttpPost]
+        public string SaveApplication([FromBody] Customer customer)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "save_Application";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", customer.Name);
+                    cmd.Parameters.AddWithValue("@_HomeAddress", customer.HomeAddress);
+                    cmd.Parameters.AddWithValue("@_OfficeAddress", customer.OfficeAddress);
+                    cmd.Parameters.AddWithValue("@_HomeContact", customer.HomeContact);
+                    cmd.Parameters.AddWithValue("@_OfficeContact", customer.OfficeContact);
+                    cmd.Parameters.AddWithValue("@_EnquiryId", customer.EnquiryId);
+                    cmd.Parameters.AddWithValue("@_ValidFrom", DateTime.Now);
+                    // for application detail table
+                    cmd.Parameters.AddWithValue("@_ApplicationStatusId", 1);
+                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", customer.ApplicationTypeId); 
+                    cmd.Parameters.AddWithValue("@_Comments", customer.Comments); 
+                    cmd.Parameters.AddWithValue("@_CreatedBy", customer.CreatedBy); 
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
         }
 
         [Route("api/forgotPassword")]
@@ -104,7 +131,7 @@ namespace SuperCheapCart.Controllers
                 // send email
                 conn.Close();
                 return "Your account is ready. You can login.";
-            }            
+            }
         }
     }
 }

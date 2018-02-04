@@ -1,5 +1,4 @@
 
-
 CREATE TABLE `myloanworld`.`applicationType` ( `applicationTypeId` INT NOT NULL AUTO_INCREMENT , 
 `name` VARCHAR(100) NOT NULL ,
 `descText` VARCHAR(1000) NULL ,
@@ -32,23 +31,10 @@ INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUE
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Applications', '1', 'home', 'allApplications');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Enquiries', '1', 'home', 'enquiries');
-INSERT INTO `applicationType` (`name`, 
-`descText`, 
-`href`, 
-`icon`, 
-`sref`, 
-`localhref`, 
-`validFrom`, 
-`validTo`) VALUES ('Credit Card', 
-'At My Loan World we understand that “life happens” and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World’s consumer business focuses on providing unsecured' ,
-'myloanworld.com/home',
-'home',
-'homeloan',
-'app/pages/home.html',
-'2018-01-08 00:00:00', 
-NULL);
 
-INSERT INTO `applicationType` (`name`, 
+INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that “life happens” and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World’s consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
+
+INSERT INTO `myloanworld`.`applicationType` (`name`, 
 `descText`, 
 `href`, 
 `icon`, 
@@ -64,7 +50,7 @@ INSERT INTO `applicationType` (`name`,
 '2018-01-08 00:00:00', 
 NULL);
 
-INSERT INTO `applicationType` (`name`, 
+INSERT INTO `myloanworld`.`applicationType` (`name`, 
 `descText`, 
 `href`, 
 `icon`, 
@@ -87,22 +73,7 @@ CREATE TABLE `myloanworld`.`applicationStatus` (
 `validTo` DATETIME NULL, 
 PRIMARY KEY (`applicationStatusId`)) ENGINE = InnoDB;
 
-
-CREATE TABLE `myloanworld`.`applicationDetail` ( 
-`applicationId` INT NOT NULL AUTO_INCREMENT , 
-`applicationStatusId` INT NOT NULL, 
-`applicationTypeId` INT NOT NULL, 
-`validTo` DATETIME NULL, 
-`validFrom` DATETIME NULL , 
-`creationDate` DATETIME NOT NULL, 
-PRIMARY KEY (`applicationId`),
-CONSTRAINT fk_applicationStatus FOREIGN KEY (`applicationStatusId`)
-  REFERENCES applicationStatus(`applicationStatusId`),
-CONSTRAINT fk_applicationType FOREIGN KEY (`applicationTypeId`)
-  REFERENCES applicationType(`applicationTypeId`)
-) ENGINE = InnoDB;
-
-CREATE TABLE `customer` (
+CREATE TABLE `myloanworld`.`customer` (
   `customerId` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `enquiryId` varchar(100) NULL COMMENT 'This tells if customer turned from Enquiry',
@@ -122,7 +93,27 @@ CREATE TABLE `customer` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE `applicationHistory` (
+CREATE TABLE `myloanworld`.`applicationDetail` ( 
+`applicationId` INT NOT NULL AUTO_INCREMENT , 
+`applicationStatusId` INT NOT NULL, 
+`customerId` INT NOT NULL, 
+`enquiryId` INT NULL, 
+`applicationTypeId` INT NOT NULL, 
+`validTo` DATETIME NULL, 
+`validFrom` DATETIME NULL , 
+`creationDate` DATETIME NOT NULL, 
+PRIMARY KEY (`applicationId`),
+CONSTRAINT fk_applicationStatus_applicationDetail FOREIGN KEY (`applicationStatusId`)
+  REFERENCES applicationStatus(`applicationStatusId`),
+CONSTRAINT fk_applicationType_applicationType FOREIGN KEY (`applicationTypeId`)
+  REFERENCES applicationType(`applicationTypeId`),
+CONSTRAINT fk_customer_customer FOREIGN KEY (`customerId`)
+  REFERENCES customer(`customerId`)
+) ENGINE = InnoDB;
+
+
+
+CREATE TABLE `myloanworld`.`applicationHistory` (
   `applicationHistoryId` INT NOT NULL AUTO_INCREMENT,
   `applicationId` int NOT NULL,
   `applicationStatusId` int NULL,
@@ -133,7 +124,7 @@ CREATE TABLE `applicationHistory` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE `enquiry` ( 
+CREATE TABLE `myloanworld`.`enquiry` ( 
 `enquiryId` INT NOT NULL AUTO_INCREMENT, 
 `name` varchar(100) NOT NULL, 
 `contactNumber` varchar(45) DEFAULT NULL, 
@@ -144,6 +135,16 @@ CREATE TABLE `enquiry` (
 PRIMARY KEY (`enquiryId`),
 CONSTRAINT fk_refferId FOREIGN KEY (`refferId`)
   REFERENCES customer(`customerId`) ) ENGINE=InnoDB;
+
+CREATE TABLE `myloanworld`.`myLoanWorldUser` ( 
+`myLoanWorldUserId` INT NOT NULL AUTO_INCREMENT, 
+`userName` varchar(100) NOT NULL, 
+`accessKeyCode` varchar(100) NOT NULL, 
+`enquiryId` INT NOT NULL, 
+`creationDate` datetime NOT NULL, 
+PRIMARY KEY (`myLoanWorldUserId`),
+CONSTRAINT fk_enquiry_myLoanWorldUser FOREIGN KEY (`enquiryId`)
+  REFERENCES enquiry(`enquiryId`) ) ENGINE=InnoDB;
 
 CREATE TABLE `myloanworld`.`roleType` ( 
 `roleTypeId` INT NOT NULL AUTO_INCREMENT , 
@@ -170,14 +171,14 @@ CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
 
 
 
-INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', '2018-01-08 00:00:00', NULL);
-INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Home Loan', '2018-01-08 00:00:00', NULL);
-INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Personal Loan', '2018-01-08 00:00:00', NULL);
-INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Education Loan', '2018-01-08 00:00:00', NULL);
-INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Vehicle Card', '2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', '2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Home Loan', '2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Personal Loan', '2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Education Loan', '2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Vehicle Card', '2018-01-08 00:00:00', NULL);
 
-INSERT INTO `customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
-INSERT INTO `customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
+INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
+INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 
 INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '1', 'New', '2018-01-08 00:00:00', 'Ashok');
 INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'Stage 1', '2018-01-08 00:00:00', 'Ashok 1');
@@ -186,19 +187,124 @@ INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationSta
 INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '5', 'Stage 4', '2018-01-08 00:00:00', 'Ashok 3');
 
 
-INSERT INTO `applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', NULL, NULL);
-INSERT INTO `applicationStatus` (`name`) VALUES ('New');
-INSERT INTO `applicationStatus` (`name`) VALUES ('Stage3');
-INSERT INTO `applicationStatus` (`name`) VALUES ('Stage 4');
-INSERT INTO `applicationStatus` (`name`) VALUES ('Stage 5');
+INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', NULL, NULL);
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('New');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Stage3');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Stage 4');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Stage 5');
 
-INSERT INTO `applicationDetail` (`applicationStatusId`, `applicationTypeId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, NULL, '2018-01-08 00:00:00');
+INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`, `applicationTypeId`,`enquiryId`,`customerId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, 1, NULL, NULL, '2018-01-08 00:00:00');
 
-INSERT INTO `roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('View customer Profile', NULL, NULL), ('Modify customer Profile', NULL, NULL);
+INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('View customer Profile', NULL, NULL), ('Modify customer Profile', NULL, NULL);
 
-INSERT INTO `enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
-INSERT INTO `enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
+INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
 
-INSERT INTO `customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '1', NULL, NULL, NULL, NULL);
-INSERT INTO `customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '2', NULL, NULL, NULL, NULL);
-INSERT INTO `customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('2', '1', NULL, NULL, NULL, NULL);
+
+INSERT INTO `myloanworld`.`myLoanWorldUser` (`accessKeyCode`, `enquiryId`, `creationDate`, 
+`userName`) VALUES ('Test', 1, '2018-01-08 00:00:00' ,'TestCustomer');
+
+INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '1', NULL, NULL, NULL, NULL);
+INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '2', NULL, NULL, NULL, NULL);
+INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('2', '1', NULL, NULL, NULL, NULL);
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `save_Application`;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `save_Application`(
+IN _Name varchar(100)
+,IN _HomeAddress varchar(100)
+,IN _OfficeAddress varchar(100)
+,IN _HomeContact  varchar(100)
+,IN _OfficeContact varchar(100)
+,IN _EnquiryId INT
+,IN _ValidFrom datetime
+,IN _ApplicationStatusId int
+,IN _ApplicationTypeId INT
+,IN _Comments varchar(200)
+,IN _CreatedBy varchar(100)
+)
+BEGIN
+INSERT INTO `myloanworld`.`customer` (`name`
+,`homeAddress`
+,`officeAddress`
+,`homeContact`
+,`officeContact`
+,`EnquiryId`) VALUES (
+_Name
+,_HomeAddress
+,_OfficeAddress
+,_HomeContact
+,_OfficeContact
+,_EnquiryId);
+
+SELECT customerId, enquiryId INTO @TempCustomerId, @TempEnquiryId FROM `myloanworld`.`customer`
+where name = _Name ;
+
+INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`
+,`customerId`
+,`enquiryId`
+,`applicationTypeId`
+,`creationDate`) VALUES (
+_ApplicationStatusId
+,@TempCustomerId
+,@TempEnquiryId
+,_ApplicationTypeId
+,CURDATE());
+
+SELECT applicationId INTO @TempApplicationId FROM `myloanworld`.`applicationDetail`
+where customerId = @TempCustomerId ;
+
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`
+, `applicationStatusId`
+,`comments`
+,`creationDate`
+,`createdBy` ) VALUES (
+@TempApplicationId
+,_ApplicationStatusId
+,_Comments
+,CURDATE()
+,_CreatedBy);
+END
+
+/* CALL `myloanworld`.`save_Application`(
+'Europe3'
+, 'Home a 3'
+, 'office a 3 '
+, 'HomeContact 3'
+, 'OfficeContact 3'
+, '1'
+, '2018-01-08 00:00:00'
+, 1
+, 1, 'comments from param', 'user fro param');
+*/
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `change_Application_Status`;
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `change_Application_Status`(
+IN _ApplicationId int
+,IN _ApplicationStatusId int
+,IN _Comments varchar(200)
+,IN _CreatedBy varchar(100)
+)
+BEGIN
+
+update `myloanworld`.`applicationDetail` set `applicationStatusId` = _ApplicationStatusId
+where applicationId = _ApplicationId;
+
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId` ,`applicationStatusId`
+,`comments`
+,`creationDate`
+,`createdBy`) VALUES (
+_ApplicationId
+,_ApplicationStatusId
+,_Comments
+,CURDATE()
+,_CreatedBy);
+
+END
+
+/* CALL `myloanworld`.`change_Application_Status`(
+1, 2, 'from Proc', 'ash from proc');
+*/

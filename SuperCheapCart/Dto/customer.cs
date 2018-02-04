@@ -22,5 +22,9 @@ namespace myloanworldService.Dto
         public DateTime ValidTo { get; set; }
         public DateTime UpdatedDate { get; set; }
         public string UpdatedBy { get; set; }
+        // todo, these properties need to be moved in different class
+        public int ApplicationTypeId { get; set; }
+        public string Comments { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

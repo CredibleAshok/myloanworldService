@@ -107,10 +107,9 @@
     <Compile Include="Controllers\ApplicationHistoryController.cs" />
     <Compile Include="Controllers\ApplicationStatusController.cs" />
     <Compile Include="Controllers\ApplicationTypeController.cs" />
-    <Compile Include="Controllers\customerController.cs" />
+    <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\EnquiryController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
-    <Compile Include="Controllers\userController.cs" />
     <Compile Include="Dto\ApplicationDetail.cs" />
     <Compile Include="Dto\ApplicationHistory.cs" />
     <Compile Include="Dto\ApplicationStatus.cs" />
@@ -120,6 +119,8 @@
     <Compile Include="Dto\Enquiry.cs" />
     <Compile Include="Dto\Menus.cs" />
     <Compile Include="Dto\ProductDto.cs" />
+    <Compile Include="Dto\User.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Exception\ExceptionHandler.cs" />
     <Compile Include="Exception\ExceptionLogger.cs" />
     <Compile Include="Exception\ExceptionLoggerContex.cs" />

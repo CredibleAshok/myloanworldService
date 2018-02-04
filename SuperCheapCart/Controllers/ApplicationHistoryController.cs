@@ -59,5 +59,30 @@ namespace SuperCheapCart.Controllers
             }
             return applicationHistoryList;
         }
+
+        [Route("api/changeApplicationStatus")]
+        [HttpPost]
+        public string ChangeApplicationStatus([FromBody] ApplicationHistory applicationHistory)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "change_Application_Status";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_ApplicationId", applicationHistory.ApplicationId);
+                    cmd.Parameters.AddWithValue("@_ApplicationStatusId", applicationHistory.ApplicationStatusId);
+                    cmd.Parameters.AddWithValue("@_Comments", applicationHistory.Comments);
+                    cmd.Parameters.AddWithValue("@_CreatedBy", applicationHistory.CreatedBy);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
     }
 }
