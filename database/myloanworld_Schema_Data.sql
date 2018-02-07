@@ -308,3 +308,7 @@ END
 /* CALL `myloanworld`.`change_Application_Status`(
 1, 2, 'from Proc', 'ash from proc');
 */
+
+UPDATE `myloanworld`.`applicationstatus` SET `name`='With Galaxy' WHERE `applicationStatusId`='2';
+UPDATE `myloanworld`.`applicationstatus` SET `name`='With Bank' WHERE `applicationStatusId`='3';
+UPDATE `myloanworld`.`applicationstatus` SET `name`='Approved' WHERE `applicationStatusId`='4';
