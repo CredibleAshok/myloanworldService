@@ -155,6 +155,15 @@ CREATE TABLE `myloanworld`.`roleType` (
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`roleTypeId`)) ENGINE = InnoDB;
 
+CREATE TABLE `myloanworld`.`maritalStatus` ( 
+`maritalStatusId` INT NOT NULL AUTO_INCREMENT , 
+`Name` VARCHAR(100) NOT NULL , 
+`validTo` DATETIME NULL, 
+`validFrom` DATETIME NULL ,
+`updatedDate` datetime NULL,
+`updatedBy` varchar(100) NULL,
+PRIMARY KEY (`maritalStatusId`)) ENGINE = InnoDB;
+
 CREATE TABLE `myloanworld`.`customerRoleType` ( 
 `customerRoleTypeId` INT NOT NULL AUTO_INCREMENT , 
 `roleTypeId` INT NOT NULL, 
@@ -312,3 +321,133 @@ END
 UPDATE `myloanworld`.`applicationstatus` SET `name`='With Galaxy' WHERE `applicationStatusId`='2';
 UPDATE `myloanworld`.`applicationstatus` SET `name`='With Bank' WHERE `applicationStatusId`='3';
 UPDATE `myloanworld`.`applicationstatus` SET `name`='Approved' WHERE `applicationStatusId`='4';
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `save_Enquiry`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `save_Enquiry`(
+IN _Name varchar(100)
+,IN _ContactNumber varchar(100)
+,IN _LoanAmt double
+,IN _Comments varchar(200)
+,OUT _EnquiryId INT
+)
+BEGIN
+INSERT INTO `myloanworld`.`enquiry` (`name`
+,`contactNumber`
+,`loanAmt`
+,`comments`
+,`creationDate`) VALUES (
+_Name
+,_ContactNumber
+,_LoanAmt
+,_Comments
+,CURDATE());
+
+SELECT enquiryId INTO _EnquiryId FROM `myloanworld`.`enquiry`
+where name = _Name  AND contactNumber = _ContactNumber;
+END$$
+
+DELIMITER ;
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ApplicationById`(
+IN _ApplicationId int
+)
+BEGIN
+if(_ApplicationId IS NULL)
+then
+	SELECT apd.applicationId as 'Application Id', apd.applicationStatusId, 
+    aps.name as 'Application Status' ,apd.applicationTypeId
+    ,apt.name as 'Application Type' ,e.name as 'Customer Name' 
+	FROM `myloanworld`.`applicationdetail` as apd
+    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
+    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
+	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId;
+else 
+	SELECT apd.applicationId as 'Application Id'
+    ,apd.applicationStatusId
+    ,aps.name as 'Application Status'
+    ,apd.applicationTypeId
+    ,apt.name as 'Application Type'
+    ,e.name as 'Customer Name' 
+    FROM `myloanworld`.`applicationdetail` as apd
+	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
+    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
+    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
+    where apd.applicationId = _ApplicationId;
+end if;
+END
+
+alter table myloanworld.customer add column FirstName varchar(50);
+alter table myloanworld.customer add column MiddleName varchar(50);
+alter table myloanworld.customer add column LastName varchar(50);
+alter table myloanworld.customer add column MaritalStatusId int;
+alter table myloanworld.customer add column MotherName varchar(50);
+alter table myloanworld.customer add column FatherName varchar(50);
+alter table myloanworld.customer add column OtherPersonal varchar(50);
+alter table myloanworld.customer add column HusbandName varchar(50);
+alter table myloanworld.customer add column LocalHomeContact varchar(50);
+alter table myloanworld.customer add column LocalOfficeContact varchar(50);
+alter table myloanworld.customer add column LocalOfficeAddress varchar(50);
+alter table myloanworld.customer add column LocalHomeAddress varchar(50);
+
+
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `update_Customer`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `update_Customer`(
+IN _FirstName varchar(100)
+,IN _MiddleName varchar(100)
+,IN _LastName varchar(100)
+,IN _HomeAddress varchar(100)
+,IN _OfficeAddress varchar(100)
+,IN _HomeContact  varchar(100)
+,IN _OfficeContact varchar(100)
+,IN _EnquiryId INT
+,IN _ValidFrom datetime
+,IN _ApplicationStatusId int
+,IN _ApplicationTypeId INT
+,IN _Comments varchar(200)
+,IN _CreatedBy varchar(100)
+)
+BEGIN
+update `myloanworld`.`customer` 
+set `FirstName` = _FirstName
+,`MiddleName` = _MiddleName
+,`LastName` = _LastName
+,`homeAddress` = _HomeAddress
+,`officeAddress` = _OfficeAddress
+,`homeContact` =_HomeContact
+,`officeContact` = _HomeContact;
+END$$
+
+DELIMITER ;
+
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `get_Customer`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `get_Customer`(
+IN _EnquiryId INT
+)
+BEGIN
+select 
+`customerId` as 'Customer Id'
+,`enquiryId` as 'Enquiry Id'
+,`FirstName` as 'First Name'
+,`MiddleName` as 'Middle Name'
+,`LastName` as 'Last Name'
+from myloanworld.customer
+WHERE `enquiryId` = _EnquiryId;
+END$$
+
+DELIMITER ;
+

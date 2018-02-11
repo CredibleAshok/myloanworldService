@@ -90,18 +90,41 @@ namespace myloanworldService.Controllers
 
         [Route("api/saveEnquiry")]
         [HttpPost]
-        public IList<Enquiry> SaveEnquiry(Enquiry enquiry)
+        public IList<Enquiry> SaveEnquiry([FromBody] Enquiry enquiry)
         {
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
+                int myoutput = 0;
                 conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand("INSERT INTO `myloanworld`.`enquiry` (`name`,`contactNumber`,`loanAmt`,`comments`,`creationDate`) VALUES (@valueToName,@valueToContactNumber,@valueToLoanAmt,@valueToComments, @valueToCreationDate);", conn))
+                using (MySqlCommand cmd = new MySqlCommand("save_Enquiry", conn))
                 {
-                    cmd.Parameters.AddWithValue("@valueToName", enquiry.Name);
-                    cmd.Parameters.AddWithValue("@valueToContactNumber", enquiry.ContactNumber);
-                    cmd.Parameters.AddWithValue("@valueToLoanAmt", enquiry.LoanAmt);
-                    cmd.Parameters.AddWithValue("@valueToComments", enquiry.Comments);
-                    cmd.Parameters.AddWithValue("@valueToCreationDate", DateTime.Now);
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", enquiry.Name);
+                    cmd.Parameters.AddWithValue("@_ContactNumber", enquiry.ContactNumber);
+                    cmd.Parameters.AddWithValue("@_LoanAmt", enquiry.LoanAmt);
+                    cmd.Parameters.AddWithValue("@_Comments", enquiry.Comments);
+                    cmd.Parameters.AddWithValue("@_EnquiryId", 1).Direction = ParameterDirection.Output;
+                    cmd.ExecuteNonQuery();
+                    myoutput = Convert.ToInt16(cmd.Parameters["@_EnquiryId"].Value);
+                }
+                //add into customer, create application and insert into application history
+                using (MySqlCommand cmd = new MySqlCommand("save_Application", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", enquiry.Name);
+                    cmd.Parameters.AddWithValue("@_HomeAddress", enquiry.customer.HomeAddress);
+                    cmd.Parameters.AddWithValue("@_OfficeAddress", enquiry.customer.OfficeAddress);
+                    cmd.Parameters.AddWithValue("@_HomeContact", "");
+                    cmd.Parameters.AddWithValue("@_OfficeContact", "");
+                    cmd.Parameters.AddWithValue("@_EnquiryId", myoutput); // this is generated from parameter above
+                    cmd.Parameters.AddWithValue("@_ValidFrom", DateTime.Now);
+                    //// for application detail table
+                    cmd.Parameters.AddWithValue("@_ApplicationStatusId", 1);
+                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", 1); //change this
+                    cmd.Parameters.AddWithValue("@_Comments", enquiry.Comments);
+                    cmd.Parameters.AddWithValue("@_CreatedBy", "Ashok"); // this must be default in database.
                     cmd.ExecuteNonQuery();
                 }
                 conn.Close();

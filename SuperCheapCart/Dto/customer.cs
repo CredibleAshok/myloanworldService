@@ -9,7 +9,7 @@ namespace myloanworldService.Dto
     {
         public int CustomerId { get; set; }
         public string Name { get; set; }
-        public string EnquiryId { get; set; }
+        public int EnquiryId { get; set; }
         public string HomeAddress { get; set; }
         public string OfficeAddress { get; set; }
         public string HomeContact { get; set; }
@@ -26,5 +26,20 @@ namespace myloanworldService.Dto
         public int ApplicationTypeId { get; set; }
         public string Comments { get; set; }
         public string CreatedBy { get; set; }
+
+        /////////////////
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public int MaritalStatusId { get; set; }
+        public string MotherName { get; set; }
+        public string FatherName { get; set; }
+        public string OtherPersonal { get; set; }
+        public string HusbandName { get; set; }
+        public string LocalHomeContact { get; set; }
+        public string LocalOfficeContact { get; set; }
+        public string LocalOfficeAddress { get; set; }
+        public string LocalHomeAddress { get; set; }
+
     }
 }
