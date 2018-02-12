@@ -327,11 +327,12 @@ DROP procedure IF EXISTS `save_Enquiry`;
 
 DELIMITER $$
 USE `myloanworld`$$
-CREATE PROCEDURE `save_Enquiry`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `save_Enquiry`(
 IN _Name varchar(100)
 ,IN _ContactNumber varchar(100)
 ,IN _LoanAmt double
 ,IN _Comments varchar(200)
+,IN _Tennure INT
 ,OUT _EnquiryId INT
 )
 BEGIN
@@ -339,11 +340,13 @@ INSERT INTO `myloanworld`.`enquiry` (`name`
 ,`contactNumber`
 ,`loanAmt`
 ,`comments`
+,`tennure`
 ,`creationDate`) VALUES (
 _Name
 ,_ContactNumber
 ,_LoanAmt
 ,_Comments
+,_Tennure
 ,CURDATE());
 
 SELECT enquiryId INTO _EnquiryId FROM `myloanworld`.`enquiry`
@@ -351,6 +354,7 @@ where name = _Name  AND contactNumber = _ContactNumber;
 END$$
 
 DELIMITER ;
+
 
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ApplicationById`(
@@ -394,6 +398,7 @@ alter table myloanworld.customer add column LocalOfficeContact varchar(50);
 alter table myloanworld.customer add column LocalOfficeAddress varchar(50);
 alter table myloanworld.customer add column LocalHomeAddress varchar(50);
 
+alter table myloanworld.enquiry add column tennure int;
 
 
 USE `myloanworld`;

@@ -104,6 +104,7 @@ namespace myloanworldService.Controllers
                     cmd.Parameters.AddWithValue("@_ContactNumber", enquiry.ContactNumber);
                     cmd.Parameters.AddWithValue("@_LoanAmt", enquiry.LoanAmt);
                     cmd.Parameters.AddWithValue("@_Comments", enquiry.Comments);
+                    cmd.Parameters.AddWithValue("@_Tennure", enquiry.Tennure);
                     cmd.Parameters.AddWithValue("@_EnquiryId", 1).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
                     myoutput = Convert.ToInt16(cmd.Parameters["@_EnquiryId"].Value);
@@ -116,13 +117,13 @@ namespace myloanworldService.Controllers
                     cmd.Parameters.AddWithValue("@_Name", enquiry.Name);
                     cmd.Parameters.AddWithValue("@_HomeAddress", enquiry.customer.HomeAddress);
                     cmd.Parameters.AddWithValue("@_OfficeAddress", enquiry.customer.OfficeAddress);
-                    cmd.Parameters.AddWithValue("@_HomeContact", "");
-                    cmd.Parameters.AddWithValue("@_OfficeContact", "");
+                    cmd.Parameters.AddWithValue("@_HomeContact", enquiry.customer.HomeContact);
+                    cmd.Parameters.AddWithValue("@_OfficeContact", enquiry.customer.OfficeContact);
                     cmd.Parameters.AddWithValue("@_EnquiryId", myoutput); // this is generated from parameter above
                     cmd.Parameters.AddWithValue("@_ValidFrom", DateTime.Now);
                     //// for application detail table
                     cmd.Parameters.AddWithValue("@_ApplicationStatusId", 1);
-                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", 1); //change this
+                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", enquiry.customer.ApplicationTypeId);
                     cmd.Parameters.AddWithValue("@_Comments", enquiry.Comments);
                     cmd.Parameters.AddWithValue("@_CreatedBy", "Ashok"); // this must be default in database.
                     cmd.ExecuteNonQuery();

@@ -12,6 +12,7 @@ namespace myloanworldService.Dto
         public string ContactNumber { get; set; }
         public int? LoanAmt { get; set; }
         public string Comments { get; set; }
+        public int? Tennure { get; set; }
         public DateTime CreationDate { get; set; }
         public int? refferId { get; set; }
         public Customer customer { get; set; }
