@@ -31,7 +31,7 @@ namespace SuperCheapCart.Controllers
                             {
                                 CustomerId = Convert.ToInt16(reader["customerId"]),
                                 Name = reader["name"].ToString(),
-                                EnquiryId = reader["enquiryId"].ToString(),
+                                EnquiryId = Convert.ToInt16(reader["enquiryId"]),
                                 HomeAddress = reader["homeAddress"].ToString(),
                                 OfficeAddress = reader["officeAddress"].ToString(),
                                 AccessKeyCode = reader["accessKeyCode"].ToString()
@@ -43,21 +43,56 @@ namespace SuperCheapCart.Controllers
             }
             return customerList;
         }
-        
-        [Route("api/saveApplication")]
+
+        [Route("api/getCustomerByEnquiryId")]
+        [HttpGet]
+        public IList<Customer> GetCustomerByEnquiryId([FromUri] int enquiryId)
+        {
+            List<Customer> customerList = new List<Customer>();
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                using (MySqlCommand cmd = new MySqlCommand("get_Customer", conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@_EnquiryId", enquiryId);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            customerList.Add(new Customer()
+                            {
+                                CustomerId = Convert.ToInt16(reader["Customer Id"]),
+                                FirstName = reader["First Name"].ToString(),
+                                MiddleName = reader["Middle Name"].ToString(),
+                                LastName = reader["Last Name"].ToString(),
+                                EnquiryId = Convert.ToInt16(reader["Enquiry Id"])
+                            });
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            return customerList;
+        }
+
+        [Route("api/updateCustomer")]
         [HttpPost]
-        public string SaveApplication([FromBody] Customer customer)
+        public string UpdateCustomer([FromBody] Customer customer)
         {
             string result = "";
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
                 conn.Open();
-                string spName = "save_Application";
+                string spName = "update_Customer";
                 using (MySqlCommand cmd = new MySqlCommand(spName, conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@_Name", customer.Name);
+                    cmd.Parameters.AddWithValue("@_FirstName", customer.FirstName);
+                    cmd.Parameters.AddWithValue("@_MiddleName", customer.MiddleName);
+                    cmd.Parameters.AddWithValue("@_LastName", customer.LastName);
                     cmd.Parameters.AddWithValue("@_HomeAddress", customer.HomeAddress);
                     cmd.Parameters.AddWithValue("@_OfficeAddress", customer.OfficeAddress);
                     cmd.Parameters.AddWithValue("@_HomeContact", customer.HomeContact);
@@ -66,9 +101,10 @@ namespace SuperCheapCart.Controllers
                     cmd.Parameters.AddWithValue("@_ValidFrom", DateTime.Now);
                     // for application detail table
                     cmd.Parameters.AddWithValue("@_ApplicationStatusId", 1);
-                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", customer.ApplicationTypeId); 
-                    cmd.Parameters.AddWithValue("@_Comments", customer.Comments); 
-                    cmd.Parameters.AddWithValue("@_CreatedBy", customer.CreatedBy); 
+                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", customer.ApplicationTypeId);
+                    cmd.Parameters.AddWithValue("@_Comments", customer.Comments);
+                    cmd.Parameters.AddWithValue("@_CreatedBy", customer.CreatedBy);
+                    cmd.Parameters.AddWithValue("@_CustomerId", customer.CustomerId);
                     cmd.ExecuteNonQuery();
                 }
                 conn.Close();

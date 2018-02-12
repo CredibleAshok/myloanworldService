@@ -9,4 +9,5 @@ DROP TABLE `myloanworld`.`roleType`;
 DROP TABLE `myloanworld`.`menus`;
 DROP TABLE `myloanworld`.`applicationHistory`;
 
-DROP procedure  save_Application
+DROP procedure  IF EXISTS   `save_Application`;
+DROP procedure IF EXISTS `change_Application_Status`;
