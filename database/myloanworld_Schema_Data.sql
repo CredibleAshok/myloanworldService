@@ -32,7 +32,7 @@ INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUE
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Enquiries', '1', 'home', 'enquiries');
 
-INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that ìlife happensî and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan Worldís consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
 
 INSERT INTO `myloanworld`.`applicationType` (`name`, 
 `descText`, 
@@ -42,7 +42,7 @@ INSERT INTO `myloanworld`.`applicationType` (`name`,
 `localhref`, 
 `validFrom`, 
 `validTo`) VALUES ('Auto Loan', 
-'Auto Loan: At My Loan World we understand that ìlife happensî and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan Worldís consumer business focuses on providing unsecured' ,
+'Auto Loan: At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,
 'myloanworld.com/auto',
 'car',
 'autoloan',
@@ -58,7 +58,7 @@ INSERT INTO `myloanworld`.`applicationType` (`name`,
 `localhref`, 
 `validFrom`, 
 `validTo`) VALUES ('Education Loan', 
-'Education Loan: At My Loan World we understand that ìlife happensî and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan Worldís consumer business focuses on providing unsecured' ,
+'Education Loan: At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,
 'myloanworld.com/education',
 'book',
 'educationloan',
@@ -220,7 +220,8 @@ INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `valid
 USE `myloanworld`;
 DROP procedure IF EXISTS `save_Application`;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `save_Application`(
+DELIMITER $$
+CREATE PROCEDURE `save_Application`(
 IN _Name varchar(100)
 ,IN _HomeAddress varchar(100)
 ,IN _OfficeAddress varchar(100)
@@ -274,7 +275,9 @@ INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`
 ,_Comments
 ,CURDATE()
 ,_CreatedBy);
-END
+END$$
+
+DELIMITER ;
 
 /* CALL `myloanworld`.`save_Application`(
 'Europe3'
@@ -291,7 +294,8 @@ END
 USE `myloanworld`;
 DROP procedure IF EXISTS `change_Application_Status`;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `change_Application_Status`(
+DELIMITER $$
+CREATE  PROCEDURE `change_Application_Status`(
 IN _ApplicationId int
 ,IN _ApplicationStatusId int
 ,IN _Comments varchar(200)
@@ -312,7 +316,9 @@ _ApplicationId
 ,CURDATE()
 ,_CreatedBy);
 
-END
+END$$
+
+DELIMITER ;
 
 /* CALL `myloanworld`.`change_Application_Status`(
 1, 2, 'from Proc', 'ash from proc');
@@ -327,7 +333,7 @@ DROP procedure IF EXISTS `save_Enquiry`;
 
 DELIMITER $$
 USE `myloanworld`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `save_Enquiry`(
+CREATE PROCEDURE `save_Enquiry`(
 IN _Name varchar(100)
 ,IN _ContactNumber varchar(100)
 ,IN _LoanAmt double
@@ -356,8 +362,8 @@ END$$
 DELIMITER ;
 
 
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ApplicationById`(
+DELIMITER $$
+CREATE  PROCEDURE `get_ApplicationById`(
 IN _ApplicationId int
 )
 BEGIN
@@ -383,7 +389,9 @@ else
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
     where apd.applicationId = _ApplicationId;
 end if;
-END
+END$$
+
+DELIMITER ;
 
 alter table myloanworld.customer add column FirstName varchar(50);
 alter table myloanworld.customer add column MiddleName varchar(50);
