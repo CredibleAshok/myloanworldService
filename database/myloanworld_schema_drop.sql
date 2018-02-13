@@ -8,6 +8,7 @@ DROP TABLE `myloanworld`.`customer`;
 DROP TABLE `myloanworld`.`roleType`;
 DROP TABLE `myloanworld`.`menus`;
 DROP TABLE `myloanworld`.`applicationHistory`;
+DROP TABLE `myloanworld`.`maritalStatus`;
 
 DROP procedure  IF EXISTS   `save_Application`;
 DROP procedure IF EXISTS `change_Application_Status`;
