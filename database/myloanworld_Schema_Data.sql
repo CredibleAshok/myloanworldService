@@ -141,6 +141,7 @@ CREATE TABLE `myloanworld`.`enquiry` (
 `name` varchar(100) NOT NULL, 
 `contactNumber` varchar(45) DEFAULT NULL, 
 `loanAmt` double DEFAULT NULL, 
+`tennure` INT NULL,
 `comments` varchar(445) DEFAULT NULL, 
 `creationDate` datetime NOT NULL, 
 `refferId` INT NULL,
@@ -407,7 +408,7 @@ DELIMITER ;
 
 
 
-alter table myloanworld.enquiry add column tennure int;
+
 
 
 USE `myloanworld`;
