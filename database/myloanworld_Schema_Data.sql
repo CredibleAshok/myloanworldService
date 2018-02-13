@@ -76,6 +76,18 @@ PRIMARY KEY (`applicationStatusId`)) ENGINE = InnoDB;
 CREATE TABLE `myloanworld`.`customer` (
   `customerId` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `FirstName` varchar(50) NULL,
+`MiddleName` varchar(50) NULL,	
+	`LastName` varchar(50) NULL,
+	`MaritalStatusId` INT NULL,
+	`MotherName` varchar(50) NULL,
+	`FatherName` varchar(50) NULL,
+	`OtherPersonal` varchar(50) NULL,
+	`HusbandName` varchar(50) NULL,
+	`LocalHomeContact` varchar(50) NULL,
+	`LocalOfficeContact` varchar(50) NULL,
+	`LocalOfficeAddress` varchar(50) NULL,
+	`LocalHomeAddress` varchar(50) NULL,
   `enquiryId` varchar(100) NULL COMMENT 'This tells if customer turned from Enquiry',
   `homeAddress` varchar(200) DEFAULT NULL,
   `officeAddress` varchar(200) DEFAULT NULL,
@@ -393,18 +405,7 @@ END$$
 
 DELIMITER ;
 
-alter table myloanworld.customer add column FirstName varchar(50);
-alter table myloanworld.customer add column MiddleName varchar(50);
-alter table myloanworld.customer add column LastName varchar(50);
-alter table myloanworld.customer add column MaritalStatusId int;
-alter table myloanworld.customer add column MotherName varchar(50);
-alter table myloanworld.customer add column FatherName varchar(50);
-alter table myloanworld.customer add column OtherPersonal varchar(50);
-alter table myloanworld.customer add column HusbandName varchar(50);
-alter table myloanworld.customer add column LocalHomeContact varchar(50);
-alter table myloanworld.customer add column LocalOfficeContact varchar(50);
-alter table myloanworld.customer add column LocalOfficeAddress varchar(50);
-alter table myloanworld.customer add column LocalHomeAddress varchar(50);
+
 
 alter table myloanworld.enquiry add column tennure int;
 
