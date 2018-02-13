@@ -27,12 +27,13 @@ CREATE TABLE `myloanworld`.`menus` ( `menuId` INT NOT NULL AUTO_INCREMENT ,
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`menuId`)) ENGINE = InnoDB;
 
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('My Profile', '1', 'home', 'profile');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Applications', '1', 'home', 'allApplications');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Enquiries', '1', 'home', 'enquiries');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Application Status', '1', 'home', 'maintainApplicationStatus');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Products', '1', 'home', 'maintainProducts');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
 
-INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that ìlife happensî and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan Worldís consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
+INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
 
 INSERT INTO `myloanworld`.`applicationType` (`name`, 
 `descText`, 
@@ -41,8 +42,8 @@ INSERT INTO `myloanworld`.`applicationType` (`name`,
 `sref`, 
 `localhref`, 
 `validFrom`, 
-`validTo`) VALUES ('Auto Loan', 
-'Auto Loan: At My Loan World we understand that ìlife happensî and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan Worldís consumer business focuses on providing unsecured' ,
+`validTo`) VALUES ('Car Loan', 
+'Auto Loan: At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,
 'myloanworld.com/auto',
 'car',
 'autoloan',
@@ -57,8 +58,40 @@ INSERT INTO `myloanworld`.`applicationType` (`name`,
 `sref`, 
 `localhref`, 
 `validFrom`, 
-`validTo`) VALUES ('Education Loan', 
-'Education Loan: At My Loan World we understand that ìlife happensî and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan Worldís consumer business focuses on providing unsecured' ,
+`validTo`) VALUES ('Personal Loan', 
+'Loan Against Property: At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,
+'myloanworld.com/education',
+'book',
+'educationloan',
+'app/pages/education.html',
+'2018-01-08 00:00:00', 
+NULL);
+
+INSERT INTO `myloanworld`.`applicationType` (`name`, 
+`descText`, 
+`href`, 
+`icon`, 
+`sref`, 
+`localhref`, 
+`validFrom`, 
+`validTo`) VALUES ('Home Loan', 
+'Loan Against Property: At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,
+'myloanworld.com/education',
+'book',
+'educationloan',
+'app/pages/education.html',
+'2018-01-08 00:00:00', 
+NULL);
+
+INSERT INTO `myloanworld`.`applicationType` (`name`, 
+`descText`, 
+`href`, 
+`icon`, 
+`sref`, 
+`localhref`, 
+`validFrom`, 
+`validTo`) VALUES ('Loan Against Property', 
+'Loan Against Property: At My Loan World we understand that ‚Äúlife happens‚Äù and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World‚Äôs consumer business focuses on providing unsecured' ,
 'myloanworld.com/education',
 'book',
 'educationloan',
@@ -76,6 +109,18 @@ PRIMARY KEY (`applicationStatusId`)) ENGINE = InnoDB;
 CREATE TABLE `myloanworld`.`customer` (
   `customerId` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `FirstName` varchar(50) NULL,
+`MiddleName` varchar(50) NULL,	
+	`LastName` varchar(50) NULL,
+	`MaritalStatusId` INT NULL,
+	`MotherName` varchar(50) NULL,
+	`FatherName` varchar(50) NULL,
+	`OtherPersonal` varchar(50) NULL,
+	`HusbandName` varchar(50) NULL,
+	`LocalHomeContact` varchar(50) NULL,
+	`LocalOfficeContact` varchar(50) NULL,
+	`LocalOfficeAddress` varchar(50) NULL,
+	`LocalHomeAddress` varchar(50) NULL,
   `enquiryId` varchar(100) NULL COMMENT 'This tells if customer turned from Enquiry',
   `homeAddress` varchar(200) DEFAULT NULL,
   `officeAddress` varchar(200) DEFAULT NULL,
@@ -84,7 +129,7 @@ CREATE TABLE `myloanworld`.`customer` (
   `otherContact` varchar(25) DEFAULT NULL,
   `sex` tinyint(1) DEFAULT NULL,
   `loanAmt` DOUBLE NULL,
-  `accessKeyCode` varchar(100) NULL,
+  `accessKeyCode` varchar(100) NULL COMMENT 'This column does not need to be here',
   `validFrom` datetime DEFAULT NULL,
   `validTo` datetime DEFAULT NULL,
   `updatedDate` datetime NULL,
@@ -103,11 +148,11 @@ CREATE TABLE `myloanworld`.`applicationDetail` (
 `validFrom` DATETIME NULL , 
 `creationDate` DATETIME NOT NULL, 
 PRIMARY KEY (`applicationId`),
-CONSTRAINT fk_applicationStatus_applicationDetail FOREIGN KEY (`applicationStatusId`)
+CONSTRAINT fk_applicationDetail_applicationStatus FOREIGN KEY (`applicationStatusId`)
   REFERENCES applicationStatus(`applicationStatusId`),
-CONSTRAINT fk_applicationType_applicationType FOREIGN KEY (`applicationTypeId`)
+CONSTRAINT fk_applicationDetail_applicationType FOREIGN KEY (`applicationTypeId`)
   REFERENCES applicationType(`applicationTypeId`),
-CONSTRAINT fk_customer_customer FOREIGN KEY (`customerId`)
+CONSTRAINT fk_applicationDetail_customer FOREIGN KEY (`customerId`)
   REFERENCES customer(`customerId`)
 ) ENGINE = InnoDB;
 
@@ -129,6 +174,7 @@ CREATE TABLE `myloanworld`.`enquiry` (
 `name` varchar(100) NOT NULL, 
 `contactNumber` varchar(45) DEFAULT NULL, 
 `loanAmt` double DEFAULT NULL, 
+`tennure` INT NULL,
 `comments` varchar(445) DEFAULT NULL, 
 `creationDate` datetime NOT NULL, 
 `refferId` INT NULL,
@@ -179,28 +225,17 @@ CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
   REFERENCES customer(`customerId`)) ENGINE = InnoDB;
 
 
-
-INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', '2018-01-08 00:00:00', NULL);
-INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Home Loan', '2018-01-08 00:00:00', NULL);
-INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Personal Loan', '2018-01-08 00:00:00', NULL);
-INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Education Loan', '2018-01-08 00:00:00', NULL);
-INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Vehicle Card', '2018-01-08 00:00:00', NULL);
-
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 
 INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '1', 'New', '2018-01-08 00:00:00', 'Ashok');
-INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'Stage 1', '2018-01-08 00:00:00', 'Ashok 1');
-INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '3', 'Stage 2', '2018-01-08 00:00:00', 'Ashok 2');
-INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '4', 'Stage 3', '2018-01-08 00:00:00', 'Ashok 3');
-INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '5', 'Stage 4', '2018-01-08 00:00:00', 'Ashok 3');
+INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'With Galaxy', '2018-01-08 00:00:00', 'Ashok 1');
 
-
-INSERT INTO `myloanworld`.`applicationType` (`name`, `validFrom`, `validTo`) VALUES ('Credit Card', NULL, NULL);
 INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('New');
-INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Stage3');
-INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Stage 4');
-INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Stage 5');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('With Galaxy');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('With Bank');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Verification');
+INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Approved');
 
 INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`, `applicationTypeId`,`enquiryId`,`customerId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, 1, NULL, NULL, '2018-01-08 00:00:00');
 
@@ -220,7 +255,8 @@ INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `valid
 USE `myloanworld`;
 DROP procedure IF EXISTS `save_Application`;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `save_Application`(
+DELIMITER $$
+CREATE PROCEDURE `save_Application`(
 IN _Name varchar(100)
 ,IN _HomeAddress varchar(100)
 ,IN _OfficeAddress varchar(100)
@@ -274,7 +310,9 @@ INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`
 ,_Comments
 ,CURDATE()
 ,_CreatedBy);
-END
+END$$
+
+DELIMITER ;
 
 /* CALL `myloanworld`.`save_Application`(
 'Europe3'
@@ -291,7 +329,8 @@ END
 USE `myloanworld`;
 DROP procedure IF EXISTS `change_Application_Status`;
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `change_Application_Status`(
+DELIMITER $$
+CREATE  PROCEDURE `change_Application_Status`(
 IN _ApplicationId int
 ,IN _ApplicationStatusId int
 ,IN _Comments varchar(200)
@@ -312,15 +351,13 @@ _ApplicationId
 ,CURDATE()
 ,_CreatedBy);
 
-END
+END$$
+
+DELIMITER ;
 
 /* CALL `myloanworld`.`change_Application_Status`(
 1, 2, 'from Proc', 'ash from proc');
 */
-
-UPDATE `myloanworld`.`applicationstatus` SET `name`='With Galaxy' WHERE `applicationStatusId`='2';
-UPDATE `myloanworld`.`applicationstatus` SET `name`='With Bank' WHERE `applicationStatusId`='3';
-UPDATE `myloanworld`.`applicationstatus` SET `name`='Approved' WHERE `applicationStatusId`='4';
 
 USE `myloanworld`;
 DROP procedure IF EXISTS `save_Enquiry`;
@@ -332,6 +369,7 @@ IN _Name varchar(100)
 ,IN _ContactNumber varchar(100)
 ,IN _LoanAmt double
 ,IN _Comments varchar(200)
+,IN _Tennure INT
 ,OUT _EnquiryId INT
 )
 BEGIN
@@ -339,11 +377,13 @@ INSERT INTO `myloanworld`.`enquiry` (`name`
 ,`contactNumber`
 ,`loanAmt`
 ,`comments`
+,`tennure`
 ,`creationDate`) VALUES (
 _Name
 ,_ContactNumber
 ,_LoanAmt
 ,_Comments
+,_Tennure
 ,CURDATE());
 
 SELECT enquiryId INTO _EnquiryId FROM `myloanworld`.`enquiry`
@@ -353,7 +393,8 @@ END$$
 DELIMITER ;
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_ApplicationById`(
+DELIMITER $$
+CREATE  PROCEDURE `get_ApplicationById`(
 IN _ApplicationId int
 )
 BEGIN
@@ -379,20 +420,12 @@ else
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
     where apd.applicationId = _ApplicationId;
 end if;
-END
+END$$
 
-alter table myloanworld.customer add column FirstName varchar(50);
-alter table myloanworld.customer add column MiddleName varchar(50);
-alter table myloanworld.customer add column LastName varchar(50);
-alter table myloanworld.customer add column MaritalStatusId int;
-alter table myloanworld.customer add column MotherName varchar(50);
-alter table myloanworld.customer add column FatherName varchar(50);
-alter table myloanworld.customer add column OtherPersonal varchar(50);
-alter table myloanworld.customer add column HusbandName varchar(50);
-alter table myloanworld.customer add column LocalHomeContact varchar(50);
-alter table myloanworld.customer add column LocalOfficeContact varchar(50);
-alter table myloanworld.customer add column LocalOfficeAddress varchar(50);
-alter table myloanworld.customer add column LocalHomeAddress varchar(50);
+DELIMITER ;
+
+
+
 
 
 
