@@ -513,3 +513,37 @@ END$$
 
 DELIMITER ;
 
+USE `myloanworld`;
+DROP procedure IF EXISTS `create_Password`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `create_Password`(
+IN _UserName varchar(50),
+IN _AccessKeyCode varchar(50)
+)
+BEGIN
+update `myloanworld`.`myLoanWorldUser` as mlwu
+    set mlwu.accessKeyCode = _AccessKeyCode
+    where mlwu.userName = _UserName;
+END$$
+
+DELIMITER ;
+
+
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `forgot_Password`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `forget_Password`(
+IN _UserName varchar(50)
+)
+BEGIN
+select mlwu.accessKeyCode as 'Access Key Code' from `myloanworld`.`myLoanWorldUser` as mlwu
+    where mlwu.userName = _UserName;
+END$$
+
+DELIMITER ;
+

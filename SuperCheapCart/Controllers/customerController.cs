@@ -1,6 +1,7 @@
 ﻿using myloanworldService.common;
 using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
+using SuperCheapCart.Dto;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -111,63 +112,6 @@ namespace SuperCheapCart.Controllers
                 result = "Success";
             }
             return result;
-        }
-
-        [Route("api/forgotPassword")]
-        [HttpPost]
-        public string ForgotPassword([FromBody] Customer customer)
-        {
-            string query = "SELECT accessKeyCode FROM customer where name='" + customer.Name + "'";
-            //string emailStatus = emailsender.SendEmailViaWebApi();
-            string accessCode = "";
-            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
-                {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            accessCode = reader["accessKeyCode"].ToString();
-                        }
-                    }
-                }
-                conn.Close();
-            }
-            return accessCode != null ? "Password sent to your registered email." : "error happened.";
-        }
-
-        [Route("api/createPassword")]
-        [HttpPost]
-        public string CreatePassword([FromBody] Customer customer)
-        {
-            List<Customer> customerList = new List<Customer>();
-            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
-            {
-                conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.customer where name='" + customer.Name + "'", conn))
-                {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            customerList.Add(new Customer()
-                            {
-                                CustomerId = Convert.ToInt16(reader["customerId"]),
-                                AccessKeyCode = reader["accessKeyCode"].ToString()
-                            });
-                        }
-                    }
-                }
-                string query = "update customer set accessKeyCode='" + customer.AccessKeyCode + "' where name='" + customer.Name + "'";
-                MySqlCommand cmdupdate = new MySqlCommand(query, conn);
-
-                cmdupdate.ExecuteNonQuery();
-                // send email
-                conn.Close();
-                return "Your account is ready. You can login.";
-            }
         }
     }
 }
