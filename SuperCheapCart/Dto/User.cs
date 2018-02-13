@@ -12,5 +12,8 @@ namespace SuperCheapCart.Dto
         public string AccessKeyCode { get; set; }
         public int EnquiryId { get; set; }
         public DateTime CreationDate { get; set; }
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; }
+        public string FeatureName { get; set; }
     }
 }

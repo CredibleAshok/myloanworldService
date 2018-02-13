@@ -239,7 +239,7 @@ INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Approved');
 
 INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`, `applicationTypeId`,`enquiryId`,`customerId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, 1, NULL, NULL, '2018-01-08 00:00:00');
 
-INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('View customer Profile', NULL, NULL), ('Modify customer Profile', NULL, NULL);
+INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('View customer Profile', NULL, NULL), ('Modify customer Profile', NULL, NULL), ('Customer', NULL, NULL), ('Admin', NULL, NULL);
 
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
@@ -480,6 +480,35 @@ select
 ,`LastName` as 'Last Name'
 from myloanworld.customer
 WHERE `enquiryId` = _EnquiryId;
+END$$
+
+DELIMITER ;
+
+DELETE FROM `myloanworld`.`customerroletype` WHERE `customerRoleTypeId`='3';
+UPDATE `myloanworld`.`customerroletype` SET `roleTypeId`='4' WHERE `customerRoleTypeId`='1';
+
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `authenticate_User`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `authenticate_User`(
+IN _UserName varchar(50),
+IN _AccessKeyCode varchar(50)
+)
+BEGIN
+SELECT mlwu.userName as 'User Name'
+    ,mlwu.enquiryId as 'Enquiry Id'
+    ,c.customerId as 'customer Id'
+    ,c.name as 'Customer Name' 
+    ,crt.roleTypeId
+    ,rt.featureName 'Feature Name'
+    FROM `myloanworld`.`myLoanWorldUser` as mlwu
+    join `myloanworld`.`customer` as c on c.name = mlwu.userName
+    right outer join `myloanworld`.`customerRoleType` as crt on crt.customerId = c.customerId
+    join `myloanworld`.`roleType` as rt on rt.roleTypeId = crt.roleTypeId
+    where mlwu.userName = _UserName and mlwu.accessKeyCode = _AccessKeyCode;
 END$$
 
 DELIMITER ;

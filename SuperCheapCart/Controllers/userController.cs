@@ -19,17 +19,22 @@ namespace SuperCheapCart.Dto
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
                 conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM myloanworld.myLoanWorldUser where userName='" + user.UserName + "' and accessKeyCode ='" + user.AccessKeyCode + "'", conn))
+                using (MySqlCommand cmd = new MySqlCommand("authenticate_User", conn))
                 {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@_UserName", user.UserName);
+                    cmd.Parameters.AddWithValue("@_AccessKeyCode", user.AccessKeyCode);
+
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             userList.Add(new User()
                             {
-                                UserName = reader["userName"].ToString()
-                                ,EnquiryId = Convert.ToInt16(reader["enquiryId"])
-                                //.AccessKeyCode = reader["accessKeyCode"].ToString()
+                                UserName = reader["User Name"].ToString()
+                                ,EnquiryId = Convert.ToInt16(reader["Enquiry Id"])
+                                ,CustomerId = Convert.ToInt16(reader["customer Id"])
+                                ,FeatureName = reader["Feature Name"].ToString()
                             });
                         }
                     }
