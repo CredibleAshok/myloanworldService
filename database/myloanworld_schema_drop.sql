@@ -12,3 +12,7 @@ DROP TABLE `myloanworld`.`maritalStatus`;
 
 DROP procedure  IF EXISTS   `save_Application`;
 DROP procedure IF EXISTS `change_Application_Status`;
+DROP procedure IF EXISTS `get_ApplicationById`;
+DROP procedure IF EXISTS `get_Customer`;
+DROP procedure IF EXISTS `save_Enquiry`;
+DROP procedure IF EXISTS `update_Customer`;
