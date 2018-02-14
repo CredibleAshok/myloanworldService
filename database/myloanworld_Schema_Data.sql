@@ -1,7 +1,7 @@
 
 CREATE TABLE `myloanworld`.`applicationType` ( `applicationTypeId` INT NOT NULL AUTO_INCREMENT , 
 `name` VARCHAR(100) NOT NULL ,
-`descText` VARCHAR(1000) NULL ,
+`descText` VARCHAR(10000) NULL ,
 `href` VARCHAR(100) NULL ,
 `icon` VARCHAR(100) NULL ,
 `sref` VARCHAR(100) NULL ,
@@ -104,6 +104,7 @@ CREATE TABLE `myloanworld`.`applicationStatus` (
 `name` VARCHAR(100) NOT NULL , 
 `validFrom` DATETIME NULL, 
 `validTo` DATETIME NULL, 
+`updatedBy` VARCHAR(50) NULL,
 PRIMARY KEY (`applicationStatusId`)) ENGINE = InnoDB;
 
 CREATE TABLE `myloanworld`.`customer` (
@@ -535,41 +536,33 @@ DELIMITER ;
 USE `myloanworld`;
 DROP procedure IF EXISTS `forgot_Password`;
 
-DELIMITER $$
-USE `myloanworld`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `forget_Password`(
-IN _UserName varchar(50)
-)
-BEGIN
-select mlwu.accessKeyCode as 'Access Key Code' from `myloanworld`.`myLoanWorldUser` as mlwu
-    where mlwu.userName = _UserName;
-END$$
-
-DELIMITER ;
+USE `myloanworld`;
+DROP procedure IF EXISTS `save_applicationType`;
 
 DELIMITER $$
 USE `myloanworld`$$
-CREATE PROCEDURE `save_applicationType`(
+CREATE DEFINER=`root`@`localhost` PROCEDURE `save_applicationType`(
 IN _Name varchar(50)
-,IN _DescText varchar(100)
+,IN _DescText varchar(10000)
 ,IN _Href varchar(100)
 ,IN _Icon varchar(100)
 ,IN _Sref varchar(100)
 ,IN _Localhref  varchar(100)
-,IN _CreatedBy varchar(50)
+,IN _UpdatedBy varchar(50)
 )
 BEGIN
 INSERT INTO `myloanworld`.`applicationType`(`name`,`descText`,`href`,`icon`,`sref`,`localhref`,`updatedBy`) 
-VALUES(_Name, _DescText, _Href, _Icon, _Sref, _Localhref, _CreatedBy);
+VALUES(_Name, _DescText, _Href, _Icon, _Sref, _Localhref, _UpdatedBy);
 END$$
 
 DELIMITER ;
+
 
 DELIMITER $$
 USE `myloanworld`$$
 CREATE PROCEDURE `update_applicationType`(
 IN _Name varchar(50)
-,IN _DescText varchar(100)
+,IN _DescText varchar(10000)
 ,IN _Href varchar(100)
 ,IN _Icon varchar(100)
 ,IN _Sref varchar(100)

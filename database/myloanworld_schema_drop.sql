@@ -1,14 +1,14 @@
-DROP TABLE `myloanworld`.`applicationDetail`;
-DROP TABLE `myloanworld`.`applicationStatus`;
-DROP TABLE `myloanworld`.`applicationType`;
-DROP TABLE `myloanworld`.`customerRoleType`;
-DROP TABLE `myloanworld`.`myLoanWorldUser`;
-DROP TABLE `myloanworld`.`enquiry`;
-DROP TABLE `myloanworld`.`customer`;
-DROP TABLE `myloanworld`.`roleType`;
-DROP TABLE `myloanworld`.`menus`;
-DROP TABLE `myloanworld`.`applicationHistory`;
-DROP TABLE `myloanworld`.`maritalStatus`;
+DROP TABLE IF EXISTS    `myloanworld`.`applicationDetail`;
+DROP TABLE IF EXISTS   `myloanworld`.`applicationStatus`;
+DROP TABLE IF EXISTS   `myloanworld`.`applicationType`;
+DROP TABLE IF EXISTS   `myloanworld`.`customerRoleType`;
+DROP TABLE IF EXISTS   `myloanworld`.`myLoanWorldUser`;
+DROP TABLE IF EXISTS   `myloanworld`.`enquiry`;
+DROP TABLE IF EXISTS   `myloanworld`.`customer`;
+DROP TABLE IF EXISTS   `myloanworld`.`roleType`;
+DROP TABLE IF EXISTS   `myloanworld`.`menus`;
+DROP TABLE IF EXISTS   `myloanworld`.`applicationHistory`;
+DROP TABLE IF EXISTS   `myloanworld`.`maritalStatus`;
 
 DROP procedure  IF EXISTS   `save_Application`;
 DROP procedure IF EXISTS `change_Application_Status`;

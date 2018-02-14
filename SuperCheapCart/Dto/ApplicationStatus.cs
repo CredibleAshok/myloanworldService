@@ -9,5 +9,6 @@ namespace myloanworldService.Dto
     {
         public int ApplicationStatusId { get; set; }
         public string Name { get; set; }        public DateTime ValidTo { get; set; }        public DateTime ValidFrom { get; set; }
+        public string UpdatedBy { get; set; }
     }
 }

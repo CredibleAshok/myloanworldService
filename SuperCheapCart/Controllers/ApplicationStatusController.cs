@@ -45,6 +45,51 @@ namespace SuperCheapCart.Controllers
             return applicationStatusList;
         }
 
+        [Route("api/updateApplicationStatus")]
+        [HttpPost]
+        public string UpdateApplicationStatus([FromBody] ApplicationStatus applicationStatus)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "update_applicationStatus";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@_Name", applicationStatus.Name);
+                    cmd.Parameters.AddWithValue("@_ApplicationStatusId", applicationStatus.ApplicationStatusId);
+                    cmd.Parameters.AddWithValue("@_UpdatedBy", applicationStatus.UpdatedBy);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
+
+        [Route("api/saveApplicationStatus")]
+        [HttpPost]
+        public string SaveApplicationStatus([FromBody] ApplicationStatus applicationStatus)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "save_applicationStatus";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", applicationStatus.Name);
+                    cmd.Parameters.AddWithValue("@_UpdatedBy", applicationStatus.UpdatedBy);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
     }
 }
