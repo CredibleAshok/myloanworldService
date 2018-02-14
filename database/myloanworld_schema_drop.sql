@@ -16,3 +16,6 @@ DROP procedure IF EXISTS `get_ApplicationById`;
 DROP procedure IF EXISTS `get_Customer`;
 DROP procedure IF EXISTS `save_Enquiry`;
 DROP procedure IF EXISTS `update_Customer`;
+DROP procedure IF EXISTS `forgot_Password`;
+DROP procedure IF EXISTS `create_Password`;
+DROP procedure IF EXISTS `authenticate_User`;
