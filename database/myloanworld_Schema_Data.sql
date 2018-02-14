@@ -590,3 +590,32 @@ where apt.`applicationTypeId` = _ApplicationTypeId;
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `save_applicationStatus`(
+IN _Name varchar(50)
+,IN _UpdatedBy varchar(50)
+)
+BEGIN
+INSERT INTO `myloanworld`.`applicationStatus`(`name`,`updatedBy`) 
+VALUES(_Name, _UpdatedBy);
+END$$
+
+DELIMITER ;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `update_applicationStatus`(
+IN _Name varchar(50)
+,IN _UpdatedBy varchar(50)
+,IN _ApplicationStatusId int
+)
+BEGIN
+UPDATE `myloanworld`.`applicationStatus` aps set 
+aps.`name` = _Name
+,aps.`updatedBy` = _UpdatedBy
+where aps.`applicationStatusId` = _ApplicationStatusId;
+END$$
+
+DELIMITER ;
