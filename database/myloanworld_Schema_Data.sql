@@ -547,3 +547,20 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `save_applicationType`(
+IN _Name varchar(50)
+,IN _DescText varchar(100)
+,IN _Href varchar(100)
+,IN _Icon varchar(100)
+,IN _Sref varchar(100)
+,IN _Localhref  varchar(100)
+,IN _CreatedBy varchar(50)
+)
+BEGIN
+INSERT INTO `myloanworld`.`applicationType`(`name`,`descText`,`href`,`icon`,`sref`,`localhref`,`updatedBy`) 
+VALUES(_Name, _DescText, _Href, _Icon, _Sref, _Localhref, _CreatedBy);
+END$$
+
+DELIMITER ;
