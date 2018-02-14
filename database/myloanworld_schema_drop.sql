@@ -19,3 +19,7 @@ DROP procedure IF EXISTS `update_Customer`;
 DROP procedure IF EXISTS `forgot_Password`;
 DROP procedure IF EXISTS `create_Password`;
 DROP procedure IF EXISTS `authenticate_User`;
+DROP procedure IF EXISTS `update_applicationStatus`;
+DROP procedure IF EXISTS `save_applicationStatus`;
+DROP procedure IF EXISTS `update_applicationType`;
+DROP procedure IF EXISTS `save_applicationType`;
