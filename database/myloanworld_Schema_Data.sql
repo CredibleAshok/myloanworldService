@@ -564,3 +564,29 @@ VALUES(_Name, _DescText, _Href, _Icon, _Sref, _Localhref, _CreatedBy);
 END$$
 
 DELIMITER ;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `update_applicationType`(
+IN _Name varchar(50)
+,IN _DescText varchar(100)
+,IN _Href varchar(100)
+,IN _Icon varchar(100)
+,IN _Sref varchar(100)
+,IN _Localhref  varchar(100)
+,IN _UpdatedBy varchar(50)
+,IN _ApplicationTypeId int
+)
+BEGIN
+UPDATE `myloanworld`.`applicationType` apt set 
+apt.`name` = _Name
+,apt.`descText` = _DescText
+,apt.`href` = _Href
+,apt.`icon` = _Icon
+,apt.`sref` = Sref
+,apt.`localhref` = _Localhref
+,apt.`updatedBy` = _UpdatedBy
+where apt.`applicationTypeId` = _ApplicationTypeId;
+END$$
+
+DELIMITER ;
