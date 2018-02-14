@@ -77,7 +77,114 @@ namespace SuperCheapCart.Controllers
             }
             return customerList;
         }
+        // these need to be ported in respective files. Start
+        [Route("api/updateApplicationStatus")]
+        [HttpPost]
+        public string UpdateApplicationStatus([FromBody] ApplicationStatus applicationStatus)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "update_applicationStatus";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
+                    cmd.Parameters.AddWithValue("@_Name", applicationStatus.FirstName);
+                    cmd.Parameters.AddWithValue("@_ApplicationStatusId", applicationStatus.ApplicationStatusId);
+                    cmd.Parameters.AddWithValue("@_UpdatedBy", applicationStatus.CreatedBy);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
+                [Route("api/saveApplicationStatus")]
+        [HttpPost]
+        public string SaveApplicationStatus([FromBody] ApplicationStatus applicationStatus)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "save_applicationStatus";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", applicationStatus.FirstName);
+                    cmd.Parameters.AddWithValue("@_UpdatedBy", applicationStatus.CreatedBy);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
+        // for application type
+                [Route("api/saveApplicationType")]
+        [HttpPost]
+        public string SaveApplicationType([FromBody] ApplicationType applicationType)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "save_ApplicationType";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", applicationType.FirstName);
+                    cmd.Parameters.AddWithValue("@_DescText", applicationType.DescText);
+                    cmd.Parameters.AddWithValue("@_Href", applicationType.Href);
+                    cmd.Parameters.AddWithValue("@_Icon", applicationType.Icon);
+                    cmd.Parameters.AddWithValue("@_Sref", applicationType.Sref);
+                    cmd.Parameters.AddWithValue("@_Localhref", applicationType.Localhref);
+                    cmd.Parameters.AddWithValue("@_Name", applicationType.FirstName);
+                    cmd.Parameters.AddWithValue("@_UpdatedBy", applicationType.CreatedBy);
+
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
+        
+                [Route("api/updateApplicationType")]
+        [HttpPost]
+        public string UpdateApplicationType([FromBody] ApplicationType applicationType)
+        {
+            string result = "";
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+            {
+                conn.Open();
+                string spName = "update_ApplicationType";
+                using (MySqlCommand cmd = new MySqlCommand(spName, conn))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@_Name", applicationType.FirstName);
+                    cmd.Parameters.AddWithValue("@_DescText", applicationType.DescText);
+                    cmd.Parameters.AddWithValue("@_Href", applicationType.Href);
+                    cmd.Parameters.AddWithValue("@_Icon", applicationType.Icon);
+                    cmd.Parameters.AddWithValue("@_Sref", applicationType.Sref);
+                    cmd.Parameters.AddWithValue("@_Localhref", applicationType.Localhref);
+                    cmd.Parameters.AddWithValue("@_Name", applicationType.FirstName);
+                    cmd.Parameters.AddWithValue("@_UpdatedBy", applicationType.CreatedBy);
+                    cmd.Parameters.AddWithValue("@_ApplicationTypeId", applicationType.ApplicationTypeId);
+                    cmd.ExecuteNonQuery();
+                }
+                conn.Close();
+                result = "Success";
+            }
+            return result;
+        }
+        // these need to be ported in respective files. End
+        
         [Route("api/updateCustomer")]
         [HttpPost]
         public string UpdateCustomer([FromBody] Customer customer)
