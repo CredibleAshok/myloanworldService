@@ -15,5 +15,8 @@ namespace SuperCheapCart.Dto
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
         public string FeatureName { get; set; }
+        public string EmailList { get; set; }
+        public string AddressList { get; set; }
+
     }
 }

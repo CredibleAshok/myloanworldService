@@ -24,4 +24,5 @@ DROP procedure IF EXISTS `myloanworld`.`update_applicationStatus`;
 DROP procedure IF EXISTS `myloanworld`.`save_applicationStatus`;
 DROP procedure IF EXISTS `myloanworld`.`update_applicationType`;
 DROP procedure IF EXISTS `myloanworld`.`save_applicationType`;
-DROP procedure IF EXISTS `get_ApplicationList`;
+DROP procedure IF EXISTS `myloanworld`.`get_ApplicationList`;
+DROP procedure IF EXISTS `myloanworld`.`update_contactDetails`;

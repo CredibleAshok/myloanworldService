@@ -46,7 +46,8 @@ namespace SuperCheapCart.Controllers
             }
             return applicationDetailList;
         }
-                [Route("api/getApplicationList")]
+
+        [Route("api/getApplicationList")]
         [HttpGet]
         public IList<ApplicationDetail> getApplication([FromUri] ApplicationDetail searchFilter)
         {
@@ -69,8 +70,7 @@ namespace SuperCheapCart.Controllers
     FROM `myloanworld`.`applicationdetail` as apd
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
     join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
-    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
-    where " + conditons), conn))
+    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId " + conditons), conn))
                 {
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -78,12 +78,12 @@ namespace SuperCheapCart.Controllers
                         {
                             applicationDetailList.Add(new ApplicationDetail()
                             {
-                                ApplicationId = Convert.ToInt16(reader["applicationId"]),
+                                ApplicationId = Convert.ToInt16(reader["Application Id"]),
                                 ApplicationStatusId = Convert.ToInt16(reader["applicationStatusId"]),
-                                //ApplicationStatus = reader["Application Status"].ToString(),
+                                ApplicationStatus = reader["Application Status"].ToString(),
                                 ApplicationTypeId = Convert.ToInt16(reader["applicationTypeId"]),
-                                //ApplicationType = reader["Application Type"].ToString(),
-                                //CustomerName = reader["Customer Name"].ToString()
+                                ApplicationType = reader["Application Type"].ToString(),
+                                CustomerName = reader["Customer Name"].ToString()
                             });
                         }
                     }

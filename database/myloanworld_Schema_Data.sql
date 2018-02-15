@@ -216,7 +216,7 @@ PRIMARY KEY (`maritalStatusId`)) ENGINE = InnoDB;
 CREATE TABLE `myloanworld`.`contactDetails` ( 
 `contactDetailsId` INT NOT NULL AUTO_INCREMENT , 
 `emailList` VARCHAR(300) NOT NULL , 
-`addresses` VARCHAR(500) NOT NULL, 
+`addressList` VARCHAR(500) NOT NULL, 
 `validFrom` DATETIME NULL ,
 `updatedDate` datetime NULL,
 `updatedBy` varchar(100) NULL,
@@ -236,7 +236,7 @@ CONSTRAINT fk_customerRoleType_roleTypeId FOREIGN KEY (`roleTypeId`)
 CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
   REFERENCES customer(`customerId`)) ENGINE = InnoDB;
 
-INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addresses`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
+INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addressList`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
 
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
@@ -438,43 +438,6 @@ END$$
 DELIMITER ;
 
 
-DELIMITER $$
-CREATE  PROCEDURE `get_ApplicationList`(
-IN _applicationId INT, 
-IN _applicationStatusId, 
-IN _customerId INT, 
-IN _enquiryId INT, 
-IN _applicationTypeId INT, 
-IN _validTo DATETIME, 
-IN _validFrom DATETIME, 
-IN _creationDate DATETIME
-)
-BEGIN
-if(_WhereCondition IS NULL)
-then
-	SELECT apd.applicationId as 'Application Id', apd.applicationStatusId, 
-    aps.name as 'Application Status' ,apd.applicationTypeId
-    ,apt.name as 'Application Type' ,e.name as 'Customer Name' 
-	FROM `myloanworld`.`applicationdetail` as apd
-    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
-    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
-	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId;
-else 
-	SELECT apd.applicationId as 'Application Id'
-    ,apd.applicationStatusId
-    ,aps.name as 'Application Status'
-    ,apd.applicationTypeId
-    ,apt.name as 'Application Type'
-    ,e.name as 'Customer Name' 
-    FROM `myloanworld`.`applicationdetail` as apd
-	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
-    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
-    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
-    where + _WhereCondition;
-end if;
-END$$
-
-DELIMITER ;
 
 /* CALL `myloanworld`.`get_ApplicationByIdWhere`(
 'apd.applicationId = 1');
@@ -661,3 +624,20 @@ where aps.`applicationStatusId` = _ApplicationStatusId;
 END$$
 
 DELIMITER ;
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `update_contactDetails`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `update_contactDetails`(
+IN _EmailList varchar(100)
+,IN _AddressList varchar(100)
+)
+BEGIN
+update `myloanworld`.`contactDetails` set  `EmailList` = _EmailList, 
+`AddressList` = _AddressList;
+END$$
+
+DELIMITER ;
+
