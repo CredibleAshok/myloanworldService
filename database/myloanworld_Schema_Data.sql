@@ -427,7 +427,39 @@ END$$
 DELIMITER ;
 
 
+DELIMITER $$
+USE `myloanworld`$$
+CREATE  PROCEDURE `getApplicationList`(
+IN _WhereCondition varchar(500)
+)
+BEGIN
+if(_WhereCondition IS NULL)
+then
+	SELECT apd.applicationId as 'Application Id', apd.applicationStatusId, 
+    aps.name as 'Application Status' ,apd.applicationTypeId
+    ,apt.name as 'Application Type' ,e.name as 'Customer Name' 
+	FROM `myloanworld`.`applicationdetail` as apd
+    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
+    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
+	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId;
+else 
+	SET @customSQL = 'SELECT apd.applicationId as 'Application Id'
+    ,apd.applicationStatusId
+    ,aps.name as 'Application Status'
+    ,apd.applicationTypeId
+    ,apt.name as 'Application Type'
+    ,e.name as 'Customer Name' 
+    FROM `myloanworld`.`applicationdetail` as apd
+	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
+    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
+    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
+    where '	 + _WhereCondition;
 
+	EXEC(@customSQL);
+end if;
+END$$
+
+DELIMITER ;
 
 
 
