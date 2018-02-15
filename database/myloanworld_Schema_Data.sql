@@ -29,10 +29,10 @@ CREATE TABLE `myloanworld`.`menus` ( `menuId` INT NOT NULL AUTO_INCREMENT ,
 PRIMARY KEY (`menuId`)) ENGINE = InnoDB;
 
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Applications', '1', 'home', 'allApplications');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Enquiries', '1', 'home', 'enquiries');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Application Status', '1', 'home', 'maintainApplicationStatus');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Products', '1', 'home', 'maintainProducts');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
 
 INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that “life happens” and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World’s consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
 
