@@ -60,8 +60,17 @@ namespace SuperCheapCart.Controllers
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
                 conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand((@"SELECT apd.applicationId, apd.applicationStatusId,
-                                                              apd.applicationTypeId, apd.customerId  FROM myloanworld.applicationDetail as apd " + conditons), conn))
+                using (MySqlCommand cmd = new MySqlCommand((@"SELECT apd.applicationId as 'Application Id'
+    ,apd.applicationStatusId
+    ,aps.name as 'Application Status'
+    ,apd.applicationTypeId
+    ,apt.name as 'Application Type'
+    ,e.name as 'Customer Name' 
+    FROM `myloanworld`.`applicationdetail` as apd
+	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
+    join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
+    join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
+    where " + conditons), conn))
                 {
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
