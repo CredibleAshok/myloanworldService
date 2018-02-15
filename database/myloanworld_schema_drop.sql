@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS   `myloanworld`.`roleType`;
 DROP TABLE IF EXISTS   `myloanworld`.`menus`;
 DROP TABLE IF EXISTS   `myloanworld`.`applicationHistory`;
 DROP TABLE IF EXISTS   `myloanworld`.`maritalStatus`;
+DROP TABLE IF EXISTS   `myloanworld`.`contactDetails`;
 
 DROP procedure  IF EXISTS   `myloanworld`.`save_Application`;
 DROP procedure IF EXISTS `myloanworld`.`change_Application_Status`;
@@ -23,3 +24,4 @@ DROP procedure IF EXISTS `myloanworld`.`update_applicationStatus`;
 DROP procedure IF EXISTS `myloanworld`.`save_applicationStatus`;
 DROP procedure IF EXISTS `myloanworld`.`update_applicationType`;
 DROP procedure IF EXISTS `myloanworld`.`save_applicationType`;
+DROP procedure IF EXISTS `get_ApplicationList`;
