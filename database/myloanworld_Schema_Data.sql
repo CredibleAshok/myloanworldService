@@ -1,3 +1,4 @@
+use `myloanworld`;
 
 CREATE TABLE `myloanworld`.`applicationType` ( `applicationTypeId` INT NOT NULL AUTO_INCREMENT , 
 `name` VARCHAR(100) NOT NULL ,
@@ -485,8 +486,6 @@ END$$
 
 DELIMITER ;
 
-DELETE FROM `myloanworld`.`customerroletype` WHERE `customerRoleTypeId`='3';
-UPDATE `myloanworld`.`customerroletype` SET `roleTypeId`='4' WHERE `customerRoleTypeId`='1';
 
 
 USE `myloanworld`;
