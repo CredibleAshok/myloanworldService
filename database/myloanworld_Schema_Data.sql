@@ -494,7 +494,7 @@ DROP procedure IF EXISTS `authenticate_User`;
 
 DELIMITER $$
 USE `myloanworld`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `authenticate_User`(
+CREATE PROCEDURE `authenticate_User`(
 IN _UserName varchar(50),
 IN _AccessKeyCode varchar(50)
 )
@@ -541,7 +541,7 @@ DROP procedure IF EXISTS `save_applicationType`;
 
 DELIMITER $$
 USE `myloanworld`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `save_applicationType`(
+CREATE PROCEDURE `save_applicationType`(
 IN _Name varchar(50)
 ,IN _DescText varchar(10000)
 ,IN _Href varchar(100)
