@@ -33,6 +33,7 @@ INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUE
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Application Status', '1', 'home', 'maintainApplicationStatus');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Products', '1', 'home', 'maintainProducts');
 INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
+INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Manage Contact Details', '1', 'home', 'contactDetails');
 
 INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that “life happens” and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World’s consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
 
@@ -212,6 +213,15 @@ CREATE TABLE `myloanworld`.`maritalStatus` (
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`maritalStatusId`)) ENGINE = InnoDB;
 
+CREATE TABLE `myloanworld`.`contactDetails` ( 
+`contactDetailsId` INT NOT NULL AUTO_INCREMENT , 
+`emailList` VARCHAR(300) NOT NULL , 
+`addresses` VARCHAR(500) NOT NULL, 
+`validFrom` DATETIME NULL ,
+`updatedDate` datetime NULL,
+`updatedBy` varchar(100) NULL,
+PRIMARY KEY (`contactDetailsId`)) ENGINE = InnoDB;
+
 CREATE TABLE `myloanworld`.`customerRoleType` ( 
 `customerRoleTypeId` INT NOT NULL AUTO_INCREMENT , 
 `roleTypeId` INT NOT NULL, 
@@ -226,6 +236,7 @@ CONSTRAINT fk_customerRoleType_roleTypeId FOREIGN KEY (`roleTypeId`)
 CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
   REFERENCES customer(`customerId`)) ENGINE = InnoDB;
 
+INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addresses`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
 
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
@@ -428,9 +439,15 @@ DELIMITER ;
 
 
 DELIMITER $$
-USE `myloanworld`$$
-CREATE  PROCEDURE `getApplicationList`(
-IN _WhereCondition varchar(500)
+CREATE  PROCEDURE `get_ApplicationList`(
+IN _applicationId INT, 
+IN _applicationStatusId, 
+IN _customerId INT, 
+IN _enquiryId INT, 
+IN _applicationTypeId INT, 
+IN _validTo DATETIME, 
+IN _validFrom DATETIME, 
+IN _creationDate DATETIME
 )
 BEGIN
 if(_WhereCondition IS NULL)
@@ -443,7 +460,7 @@ then
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId;
 else 
-	SET @customSQL = 'SELECT apd.applicationId as 'Application Id'
+	SELECT apd.applicationId as 'Application Id'
     ,apd.applicationStatusId
     ,aps.name as 'Application Status'
     ,apd.applicationTypeId
@@ -453,14 +470,15 @@ else
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
     join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
-    where '	 + _WhereCondition;
-
-	EXEC(@customSQL);
+    where + _WhereCondition;
 end if;
 END$$
 
 DELIMITER ;
 
+/* CALL `myloanworld`.`get_ApplicationByIdWhere`(
+'apd.applicationId = 1');
+*/
 
 
 USE `myloanworld`;
