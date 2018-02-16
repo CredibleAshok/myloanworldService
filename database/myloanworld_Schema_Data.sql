@@ -252,7 +252,7 @@ INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Approved');
 
 INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`, `applicationTypeId`,`enquiryId`,`customerId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, 1, NULL, NULL, '2018-01-08 00:00:00');
 
-INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('Admin', NULL, NULL), ('Modify customer Profile', NULL, NULL), ('Customer', NULL, NULL), ('View customer Profile', NULL, NULL);
+INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('Admin', NULL, NULL), ('Customer', NULL, NULL);
 
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
@@ -298,6 +298,16 @@ _Name
 
 SELECT customerId, enquiryId INTO @TempCustomerId, @TempEnquiryId FROM `myloanworld`.`customer`
 where name = _Name ;
+
+/* Assign role to this customer, make an entry into role type for this customer */
+INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`) VALUES ('2', @TempCustomerId);
+
+/* create a user for this customer, make an entry into role type for this customer
+by default no password, user has to create his password by create password utility
+by default user name is one sent from enquiry table. This needs to be changed
+ */
+INSERT INTO `myloanworld`.`myLoanWorldUser` (`enquiryId`, `creationDate`, 
+`userName`) VALUES (@TempEnquiryId, '2018-01-08 00:00:00' ,_Name);
 
 INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`
 ,`customerId`
@@ -403,7 +413,7 @@ SELECT enquiryId INTO _EnquiryId FROM `myloanworld`.`enquiry`
 where name = _Name  AND contactNumber = _ContactNumber;
 END$$
 
-DELIMITER ;
+DELIMITER;
 
 
 DELIMITER $$
