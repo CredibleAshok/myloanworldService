@@ -238,32 +238,40 @@ CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
 
 INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addressList`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
 
-INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
+INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('SaxenaVaibhav', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
+/*
+can be removed once testing is done
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
 
 INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '1', 'New', '2018-01-08 00:00:00', 'Ashok');
 INSERT INTO `myloanworld`.`applicationHistory` (`applicationId`, `applicationStatusId`, `comments`, `creationDate`, `createdBy`) VALUES ('1', '2', 'With Galaxy', '2018-01-08 00:00:00', 'Ashok 1');
-
+*/
 INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('New');
 INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('With Galaxy');
 INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('With Bank');
 INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Verification');
 INSERT INTO `myloanworld`.`applicationStatus` (`name`) VALUES ('Approved');
 
+/*
+can be removed once testing is done
 INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`, `applicationTypeId`,`enquiryId`,`customerId`, `validTo`, `validFrom`, `creationDate`) VALUES ('1', '1', NULL, 1, NULL, NULL, '2018-01-08 00:00:00');
-
+*/
 INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VALUES ('Admin', NULL, NULL), ('Customer', NULL, NULL);
-
+/*
+can be removed once testing is done
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
-
+*/
 
 INSERT INTO `myloanworld`.`myLoanWorldUser` (`accessKeyCode`, `enquiryId`, `creationDate`, 
 `userName`) VALUES ('Test', 1, '2018-01-08 00:00:00' ,'TestCustomer');
 
 INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '1', NULL, NULL, NULL, NULL);
-INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '2', NULL, NULL, NULL, NULL);
+/*
+can be removed once testing is done
 INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('2', '1', NULL, NULL, NULL, NULL);
+INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '2', NULL, NULL, NULL, NULL);
+*/
 
 USE `myloanworld`;
 DROP procedure IF EXISTS `save_Application`;
@@ -554,9 +562,22 @@ END$$
 DELIMITER ;
 
 
-
 USE `myloanworld`;
 DROP procedure IF EXISTS `forgot_Password`;
+
+DELIMITER $$
+USE `myloanworld`$$
+CREATE PROCEDURE `forgot_Password`(
+IN _UserName varchar(50)
+,OUT _UserPasssword varchar(50)
+)
+BEGIN
+SELECT mlwu.accessKeyCode INTO _UserPasssword FROM  `myloanworld`.`myLoanWorldUser` as mlwu 
+where mlwu.userName = _UserName; 
+END$$
+
+DELIMITER ;
+
 
 USE `myloanworld`;
 DROP procedure IF EXISTS `save_applicationType`;
