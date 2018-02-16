@@ -29,7 +29,7 @@ namespace SuperCheapCart.Dto
                             userList.Add(new User()
                             {
                                 EmailList = reader["emailList"].ToString()
-                                ,AddressList = reader["addresses"].ToString()
+                                ,AddressList = reader["addressList"].ToString()
                             });
                         }
                     }
