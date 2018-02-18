@@ -96,7 +96,7 @@ namespace SuperCheapCart.Controllers
         private string makeQuery(ApplicationDetail searchFilter)
         {
             IList<string> conditionList = new List<string>();
-            string query = "where ";
+            string query = "";
             foreach (var prop in searchFilter.GetType().GetProperties())
             {
                 if (prop.GetValue(searchFilter, null) != null)
@@ -120,10 +120,32 @@ namespace SuperCheapCart.Controllers
             }
             else if (conditionList.Count == 1)
             {
-                query += conditionList[0];
+                if (conditionList[0].IndexOf("CustomerName=")>-1)
+                {
+                    query += "e.name='" + searchFilter.CustomerName + "'";
+                }
+                else
+                {
+                    query += conditionList[0];
+                }
             }
-            string queryWithoutEnd = query.Substring(0, query.LastIndexOf(" or "));
-            return queryWithoutEnd;
+            string queryWithoutEnd = "";
+            if (query.LastIndexOf(" or ") > -1)
+            {
+                return queryWithoutEnd = " where " + query.Substring(0, query.LastIndexOf(" or "));
+            }
+            else
+            {
+                if (query == "")
+                {
+                    return query;
+                }
+                else
+                {
+                    return " where " + query;
+                }
+
+            }
         }
     }
 }

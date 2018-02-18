@@ -16,10 +16,46 @@ namespace SuperCheapCart.common
             this.Body = body;
             this.Subject = subject;
         }
-        public string SendEmailViaWebApi()
+        public string SendEnquiryDetailsEmailViaWebApi()
         {
             MailMessage mail = new MailMessage();
             SmtpClient SmtpServer = new SmtpClient("relay-hosting.secureserver.net");
+            //SmtpClient SmtpServer = new SmtpClient("smtpout.secureserver.net");
+            //Note: This code will only work on live environment but not on localhost.
+            mail.From = new MailAddress(From);
+            mail.To.Add(To);
+            mail.Subject = Subject;
+            mail.Body = Body;
+            SmtpServer.Port = 25;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("letusknow@myloanworld.com", "!@#pwd123");
+            SmtpServer.EnableSsl = false;
+            SmtpServer.Send(mail);          
+            return "email sent";
+        }
+
+        public string SendUserIdToClientEmailViaWebApi()
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("relay-hosting.secureserver.net");
+            //SmtpClient SmtpServer = new SmtpClient("smtpout.secureserver.net");
+            //Note: This code will only work on live environment but not on localhost.
+            mail.From = new MailAddress(From);
+            mail.To.Add(To);
+            mail.Subject = Subject;
+            mail.Body = Body;
+            SmtpServer.Port = 25;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("letusknow@myloanworld.com", "!@#pwd123");
+            SmtpServer.EnableSsl = false;
+            SmtpServer.Send(mail);
+            return "email sent";
+        }
+
+        public string SendPasswordToClientEmailViaWebApi()
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("relay-hosting.secureserver.net");
+            //SmtpClient SmtpServer = new SmtpClient("smtpout.secureserver.net");
+            //Note: This code will only work on live environment but not on localhost.
             mail.From = new MailAddress(From);
             mail.To.Add(To);
             mail.Subject = Subject;

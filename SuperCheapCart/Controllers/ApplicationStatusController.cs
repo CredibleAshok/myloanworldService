@@ -11,7 +11,6 @@ namespace SuperCheapCart.Controllers
     public class ApplicationStatusController : ApiController
     {
         ConnectionMaker connection = new ConnectionMaker();
-        EmailSender emailsender = new EmailSender("letusknow@myloanworld.com", "ashok.forklift@gmail.com", "Email body Ashok", "Email Subject Ashok");
 
         [Route("api/getApplicationStatus")]
         [HttpGet]

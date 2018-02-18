@@ -112,6 +112,7 @@ PRIMARY KEY (`applicationStatusId`)) ENGINE = InnoDB;
 CREATE TABLE `myloanworld`.`customer` (
   `customerId` INT NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
+  `emailId` varchar(100) NOT NULL,
   `FirstName` varchar(50) NULL,
 `MiddleName` varchar(50) NULL,	
 	`LastName` varchar(50) NULL,
@@ -188,7 +189,7 @@ CONSTRAINT fk_refferId FOREIGN KEY (`refferId`)
 CREATE TABLE `myloanworld`.`myLoanWorldUser` ( 
 `myLoanWorldUserId` INT NOT NULL AUTO_INCREMENT, 
 `userName` varchar(100) NOT NULL, 
-`accessKeyCode` varchar(100) NOT NULL, 
+`accessKeyCode` varchar(100) NULL, 
 `enquiryId` INT NOT NULL, 
 `creationDate` datetime NOT NULL, 
 PRIMARY KEY (`myLoanWorldUserId`),
@@ -238,7 +239,7 @@ CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
 
 INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addressList`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
 
-INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('SaxenaVaibhav', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
+INSERT INTO `myloanworld`.`customer` (`name`,`emailId`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`, `enquiryId`) VALUES ('SaxenaVaibhav','letusknow@myloanworld.com', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL, 1);
 /*
 can be removed once testing is done
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
@@ -260,11 +261,12 @@ INSERT INTO `myloanworld`.`roleType` (`featureName`, `validTo`, `validFrom`) VAL
 /*
 can be removed once testing is done
 INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', NULL);
-INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
 */
+INSERT INTO `myloanworld`.`enquiry` (`name`, `contactNumber`, `loanAmt`, `comments`, `creationDate`, `refferId`) VALUES ('Test', NULL, NULL, NULL, '2018-01-08 00:00:00', 1);
+
 
 INSERT INTO `myloanworld`.`myLoanWorldUser` (`accessKeyCode`, `enquiryId`, `creationDate`, 
-`userName`) VALUES ('Test', 1, '2018-01-08 00:00:00' ,'TestCustomer');
+`userName`) VALUES ('Test', 1, '2018-01-08 00:00:00' ,'SaxenaVaibhav');
 
 INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '1', NULL, NULL, NULL, NULL);
 /*
@@ -289,6 +291,9 @@ IN _Name varchar(100)
 ,IN _ApplicationTypeId INT
 ,IN _Comments varchar(200)
 ,IN _CreatedBy varchar(100)
+,IN _EmailId varchar(100)
+,OUT _UserId varchar(100)
+,OUT _ContactUsEmail varchar(100)
 )
 BEGIN
 INSERT INTO `myloanworld`.`customer` (`name`
@@ -296,13 +301,15 @@ INSERT INTO `myloanworld`.`customer` (`name`
 ,`officeAddress`
 ,`homeContact`
 ,`officeContact`
-,`EnquiryId`) VALUES (
+,`EnquiryId`
+,`emailId`) VALUES (
 _Name
 ,_HomeAddress
 ,_OfficeAddress
 ,_HomeContact
 ,_OfficeContact
-,_EnquiryId);
+,_EnquiryId
+,_EmailId);
 
 SELECT customerId, enquiryId INTO @TempCustomerId, @TempEnquiryId FROM `myloanworld`.`customer`
 where name = _Name ;
@@ -315,7 +322,11 @@ by default no password, user has to create his password by create password utili
 by default user name is one sent from enquiry table. This needs to be changed
  */
 INSERT INTO `myloanworld`.`myLoanWorldUser` (`enquiryId`, `creationDate`, 
-`userName`) VALUES (@TempEnquiryId, '2018-01-08 00:00:00' ,_Name);
+`userName`) VALUES (@TempEnquiryId, '2018-01-08 00:00:00' ,concat(_Name,@TempEnquiryId));
+
+SET _UserId = concat(_Name,@TempEnquiryId);
+
+select `EmailList` into _ContactUsEmail from `myloanworld`.`contactDetails`;
 
 INSERT INTO `myloanworld`.`applicationDetail` (`applicationStatusId`
 ,`customerId`
@@ -434,7 +445,7 @@ then
 	SELECT apd.applicationId as 'Application Id', apd.applicationStatusId, 
     aps.name as 'Application Status' ,apd.applicationTypeId
     ,apt.name as 'Application Type' ,e.name as 'Customer Name' 
-	FROM `myloanworld`.`applicationdetail` as apd
+	FROM `myloanworld`.`applicationDetail` as apd
     join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId;
@@ -445,7 +456,7 @@ else
     ,apd.applicationTypeId
     ,apt.name as 'Application Type'
     ,e.name as 'Customer Name' 
-    FROM `myloanworld`.`applicationdetail` as apd
+    FROM `myloanworld`.`applicationDetail` as apd
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
     join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId
@@ -511,12 +522,12 @@ select
 ,`FirstName` as 'First Name'
 ,`MiddleName` as 'Middle Name'
 ,`LastName` as 'Last Name'
+,`emailId` as 'EmailId'
 from myloanworld.customer
 WHERE `enquiryId` = _EnquiryId;
 END$$
 
 DELIMITER ;
-
 
 
 USE `myloanworld`;
@@ -536,13 +547,15 @@ SELECT mlwu.userName as 'User Name'
     ,crt.roleTypeId
     ,rt.featureName 'Feature Name'
     FROM `myloanworld`.`myLoanWorldUser` as mlwu
-    join `myloanworld`.`customer` as c on c.name = mlwu.userName
+    join `myloanworld`.`customer` as c on c.enquiryId = mlwu.enquiryId
     right outer join `myloanworld`.`customerRoleType` as crt on crt.customerId = c.customerId
     join `myloanworld`.`roleType` as rt on rt.roleTypeId = crt.roleTypeId
     where mlwu.userName = _UserName and mlwu.accessKeyCode = _AccessKeyCode;
 END$$
 
 DELIMITER ;
+
+call `myloanworld`.`authenticate_User`('TestCustomer','Test');
 
 USE `myloanworld`;
 DROP procedure IF EXISTS `create_Password`;
@@ -671,4 +684,5 @@ update `myloanworld`.`contactDetails` set  `EmailList` = _EmailList,
 END$$
 
 DELIMITER ;
+
 

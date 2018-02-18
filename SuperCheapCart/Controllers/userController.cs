@@ -71,19 +71,16 @@ namespace SuperCheapCart.Dto
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@_UserName", user.UserName);
                     cmd.Parameters.AddWithValue("@_AccessKeyCode", user.AccessKeyCode);
-                    cmd.ExecuteNonQuery();
+                    
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             userList.Add(new User()
                             {
-                                UserName = reader["User Name"].ToString()
-                                ,
-                                EnquiryId = Convert.ToInt16(reader["Enquiry Id"])
-                                ,
-                                CustomerId = Convert.ToInt16(reader["customer Id"])
-                                ,
+                                UserName = reader["User Name"].ToString(),
+                                EnquiryId = Convert.ToInt16(reader["Enquiry Id"]),
+                                CustomerId = Convert.ToInt16(reader["customer Id"]),
                                 FeatureName = reader["Feature Name"].ToString()
                             });
                         }

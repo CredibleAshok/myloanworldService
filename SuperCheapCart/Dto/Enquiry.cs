@@ -16,5 +16,8 @@ namespace myloanworldService.Dto
         public DateTime CreationDate { get; set; }
         public int? refferId { get; set; }
         public Customer customer { get; set; }
+        public string EmailId { get; set; }
+        public string UserId { get; set; }
+        public string ContactUsEmail { get; set; }
     }
 }

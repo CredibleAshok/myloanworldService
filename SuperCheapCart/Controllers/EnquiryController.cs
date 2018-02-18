@@ -12,6 +12,7 @@ using MySql.Data.MySqlClient;
 using MySql.Data;
 using System.Configuration;
 using myloanworldService.common;
+using SuperCheapCart.common;
 
 namespace myloanworldService.Controllers
 {
@@ -58,7 +59,7 @@ namespace myloanworldService.Controllers
         private string makeQuery(Enquiry searchFilter)
         {
             IList<string> conditionList = new List<string>();
-            string query = "where ";
+            string query = "";
             foreach (var prop in searchFilter.GetType().GetProperties())
             {
                 if (prop.GetValue(searchFilter, null) != null)
@@ -84,17 +85,36 @@ namespace myloanworldService.Controllers
             {
                 query += conditionList[0];
             }
-            string queryWithoutEnd = query.Substring(0, query.LastIndexOf(" or "));
-            return queryWithoutEnd;
+            string queryWithoutEnd = "";
+            if (query.LastIndexOf(" or ") > -1)
+            {
+             return queryWithoutEnd =" where " + query.Substring(0, query.LastIndexOf(" or "));
+            }
+            else
+            {
+                if (query=="")
+                {
+                    return query;
+                }
+                else
+                {
+                    return " where " + query;
+                }
+                
+            }
         }
 
         [Route("api/saveEnquiry")]
         [HttpPost]
-        public IList<Enquiry> SaveEnquiry([FromBody] Enquiry enquiry)
+        public string SaveEnquiry([FromBody] Enquiry enquiry)
         {
+            int myoutput = 0;
+            string userId = "";
+            string contactUsEmail = "";
+
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
-                int myoutput = 0;
+
                 conn.Open();
                 using (MySqlCommand cmd = new MySqlCommand("save_Enquiry", conn))
                 {
@@ -126,11 +146,21 @@ namespace myloanworldService.Controllers
                     cmd.Parameters.AddWithValue("@_ApplicationTypeId", enquiry.customer.ApplicationTypeId);
                     cmd.Parameters.AddWithValue("@_Comments", enquiry.Comments);
                     cmd.Parameters.AddWithValue("@_CreatedBy", "Ashok"); // this must be default in database.
+                    cmd.Parameters.AddWithValue("@_EmailId", enquiry.EmailId);
+                    cmd.Parameters.AddWithValue("@_UserId", enquiry.UserId).Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("@_ContactUsEmail", enquiry.ContactUsEmail).Direction = ParameterDirection.Output;
+                    
                     cmd.ExecuteNonQuery();
+                    userId = cmd.Parameters["@_UserId"].Value.ToString();
+                    contactUsEmail = cmd.Parameters["@_ContactUsEmail"].Value.ToString();
                 }
                 conn.Close();
             }
-            return getAllEnquiry(null);
+            EmailSender enquiryEmailSender = new EmailSender("letusknow@myloanworld.com", contactUsEmail, "Email body Ashok", ("New Enquiry - " + enquiry.Name));
+            string enquiryEmailStatus = enquiryEmailSender.SendEnquiryDetailsEmailViaWebApi();
+            EmailSender userIdEmailSender = new EmailSender("letusknow@myloanworld.com", enquiry.EmailId, "Your User Id", ("New Enquiry - " + enquiry.Name));
+            string userIdEmailStatus = userIdEmailSender.SendEnquiryDetailsEmailViaWebApi();
+            return (enquiryEmailStatus != null || userIdEmailStatus != null) ? ("Congratulations! Enquiry Received!"): "Some Problem Happened!";
         }
     }
 }
