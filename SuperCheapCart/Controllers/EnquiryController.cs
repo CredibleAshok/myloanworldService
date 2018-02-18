@@ -18,8 +18,37 @@ namespace myloanworldService.Controllers
 {
     public class EnquiryController : ApiController
     {
+        private string FormatEmail(Enquiry enquiry, string userId, string type)
+        {
+            string linkToSetPassword = @"http://myloanworld.com/";
+            if (type != "enquiry")
+            {
+                return @"<html><head></head><body>
+                     <span><b>Congratulations! " + enquiry.Name + @"</b></span>
+                     </br><span>Thanks for providing the opportunity to server you!</span>
+                     </br><span>Your can view progress on your application by logging into application. Click this link to create 
+                        your password. <a href='" + linkToSetPassword + @"'></a></span>
+                    </br><span><b>Please note: Your userId is: " + userId + @"</b></ span > 
+                     </body>
+                     </html>";
+            }
+            else
+            {
+                return @"<html><head></head><body>
+                     <span><b>Congratulations!</b></span>
+                     </br><span>" + enquiry.Name + @"wants to get in touch with you!</span>
+                     </br><h1>Details are as follows.</h1> 
+<table style='width: 100%;border:2px solid blue;'><tr>
+<td>Contact Number:</td><td><b>" + enquiry.ContactNumber + @"</b></td>
+<td>Loan Amount:</td><td><b>" + enquiry.LoanAmt + @"</b></td>
+<td>Comments:</td><td><b>" + enquiry.Comments + @"</b></td>
+</tr></table>
+                     </body>
+                     </html>";
+            }
+            
+        }
         ConnectionMaker connection = new ConnectionMaker();
-
         [Route("api/getAllEnquiry")]
         [HttpGet]
         public IList<Enquiry> getAllEnquiry([FromUri] Enquiry searchFilter)
@@ -45,7 +74,7 @@ namespace myloanworldService.Controllers
                                 EnquiryId = Convert.ToInt16(reader["enquiryId"]),
                                 Name = reader["name"].ToString(),
                                 ContactNumber = reader["contactNumber"].ToString(),
-                                LoanAmt = ((reader["loanAmt"]) is DBNull) ? (int?)null:  Convert.ToInt16(reader["loanAmt"]),
+                                LoanAmt = ((reader["loanAmt"]) is DBNull) ? (int?)null : Convert.ToInt16(reader["loanAmt"]),
                                 Comments = reader["comments"].ToString()
                             });
                         }
@@ -88,11 +117,11 @@ namespace myloanworldService.Controllers
             string queryWithoutEnd = "";
             if (query.LastIndexOf(" or ") > -1)
             {
-             return queryWithoutEnd =" where " + query.Substring(0, query.LastIndexOf(" or "));
+                return queryWithoutEnd = " where " + query.Substring(0, query.LastIndexOf(" or "));
             }
             else
             {
-                if (query=="")
+                if (query == "")
                 {
                     return query;
                 }
@@ -100,7 +129,7 @@ namespace myloanworldService.Controllers
                 {
                     return " where " + query;
                 }
-                
+
             }
         }
 
@@ -149,18 +178,18 @@ namespace myloanworldService.Controllers
                     cmd.Parameters.AddWithValue("@_EmailId", enquiry.EmailId);
                     cmd.Parameters.AddWithValue("@_UserId", enquiry.UserId).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@_ContactUsEmail", enquiry.ContactUsEmail).Direction = ParameterDirection.Output;
-                    
+
                     cmd.ExecuteNonQuery();
                     userId = cmd.Parameters["@_UserId"].Value.ToString();
                     contactUsEmail = cmd.Parameters["@_ContactUsEmail"].Value.ToString();
                 }
                 conn.Close();
             }
-            EmailSender enquiryEmailSender = new EmailSender("letusknow@myloanworld.com", contactUsEmail, "Email body Ashok", ("New Enquiry - " + enquiry.Name));
+            EmailSender enquiryEmailSender = new EmailSender("letusknow@myloanworld.com", contactUsEmail, FormatEmail(enquiry, userId, "enquiry"), ("New Enquiry - " + enquiry.Name));
             string enquiryEmailStatus = enquiryEmailSender.SendEnquiryDetailsEmailViaWebApi();
-            EmailSender userIdEmailSender = new EmailSender("letusknow@myloanworld.com", enquiry.EmailId, "Your User Id", ("New Enquiry - " + enquiry.Name));
+            EmailSender userIdEmailSender = new EmailSender("letusknow@myloanworld.com", enquiry.EmailId, FormatEmail(enquiry, userId, "userId"), ("User Id from My Loan World - " + userId));
             string userIdEmailStatus = userIdEmailSender.SendEnquiryDetailsEmailViaWebApi();
-            return (enquiryEmailStatus != null || userIdEmailStatus != null) ? ("Congratulations! Enquiry Received!"): "Some Problem Happened!";
+            return (enquiryEmailStatus != null || userIdEmailStatus != null) ? ("Congratulations! Enquiry Received!") : "Some Problem Happened!";
         }
     }
 }

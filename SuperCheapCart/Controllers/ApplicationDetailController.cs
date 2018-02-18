@@ -67,7 +67,7 @@ namespace SuperCheapCart.Controllers
     ,apd.applicationTypeId
     ,apt.name as 'Application Type'
     ,e.name as 'Customer Name' 
-    FROM `myloanworld`.`applicationdetail` as apd
+    FROM `myloanworld`.`applicationDetail` as apd
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
     join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
     join `myloanworld`.`applicationType` as apt on apt.applicationTypeId = apd.applicationTypeId " + conditons), conn))
@@ -120,9 +120,13 @@ namespace SuperCheapCart.Controllers
             }
             else if (conditionList.Count == 1)
             {
-                if (conditionList[0].IndexOf("CustomerName=")>-1)
+                if (conditionList[0].IndexOf("CustomerName=") > -1)
                 {
                     query += "e.name='" + searchFilter.CustomerName + "'";
+                }
+                else if (conditionList[0].IndexOf("EnquiryId") > -1)
+                {
+                    query += "apd.enquiryId=" + searchFilter.EnquiryId;
                 }
                 else
                 {

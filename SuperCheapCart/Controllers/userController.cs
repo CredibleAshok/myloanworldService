@@ -1,7 +1,9 @@
 ﻿using myloanworldService.common;
 using MySql.Data.MySqlClient;
+using SuperCheapCart.common;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -116,26 +118,24 @@ namespace SuperCheapCart.Dto
         [HttpPost]
         public string ForgotPassword([FromBody] User user)
         {
-            var AccessKeyCode = "";
+            string UserPasssword = "";
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
+                
                 conn.Open();
-                using (MySqlCommand cmd = new MySqlCommand("forget_Password", conn))
+                using (MySqlCommand cmd = new MySqlCommand("forgot_Password", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@_UserName", user.UserName);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            AccessKeyCode = reader["Access Key Code"].ToString();
-                        }
-                    }
+                    cmd.Parameters.AddWithValue("@_UserPasssword", "").Direction = ParameterDirection.Output;
+                    cmd.ExecuteNonQuery();
+                    UserPasssword = cmd.Parameters["@_UserPasssword"].Value.ToString();
                 }
                 conn.Close();
             }
-            return AccessKeyCode != null ? "Password sent to your registered email." : "error happened.";
+            EmailSender enquiryEmailSender = new EmailSender("letusknow@myloanworld.com", "ashok.forklift@gmail.com", ("Your password is: " + UserPasssword), ("You password recovered!"));
+            string enquiryEmailStatus = enquiryEmailSender.SendForgotPasswordEmailViaWebApi();
+            return enquiryEmailStatus != null ? "Password sent to your registered email." : "error happened.";
         }
     }
 }

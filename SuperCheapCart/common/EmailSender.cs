@@ -16,6 +16,7 @@ namespace SuperCheapCart.common
             this.Body = body;
             this.Subject = subject;
         }
+        //todo: don't need separate methods.
         public string SendEnquiryDetailsEmailViaWebApi()
         {
             MailMessage mail = new MailMessage();
@@ -26,6 +27,7 @@ namespace SuperCheapCart.common
             mail.To.Add(To);
             mail.Subject = Subject;
             mail.Body = Body;
+            mail.IsBodyHtml = true;
             SmtpServer.Port = 25;
             SmtpServer.Credentials = new System.Net.NetworkCredential("letusknow@myloanworld.com", "!@#pwd123");
             SmtpServer.EnableSsl = false;
@@ -43,6 +45,7 @@ namespace SuperCheapCart.common
             mail.To.Add(To);
             mail.Subject = Subject;
             mail.Body = Body;
+            mail.IsBodyHtml = true;
             SmtpServer.Port = 25;
             SmtpServer.Credentials = new System.Net.NetworkCredential("letusknow@myloanworld.com", "!@#pwd123");
             SmtpServer.EnableSsl = false;
@@ -60,6 +63,25 @@ namespace SuperCheapCart.common
             mail.To.Add(To);
             mail.Subject = Subject;
             mail.Body = Body;
+            mail.IsBodyHtml = true;
+            SmtpServer.Port = 25;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("letusknow@myloanworld.com", "!@#pwd123");
+            SmtpServer.EnableSsl = false;
+            SmtpServer.Send(mail);
+            return "email sent";
+        }
+
+        public string SendForgotPasswordEmailViaWebApi()
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("relay-hosting.secureserver.net");
+            //SmtpClient SmtpServer = new SmtpClient("smtpout.secureserver.net");
+            //Note: This code will only work on live environment but not on localhost.
+            mail.From = new MailAddress(From);
+            mail.To.Add(To);
+            mail.Subject = Subject;
+            mail.Body = Body;
+            mail.IsBodyHtml = true;
             SmtpServer.Port = 25;
             SmtpServer.Credentials = new System.Net.NetworkCredential("letusknow@myloanworld.com", "!@#pwd123");
             SmtpServer.EnableSsl = false;
