@@ -66,7 +66,8 @@ namespace SuperCheapCart.Controllers
     ,aps.name as 'Application Status'
     ,apd.applicationTypeId
     ,apt.name as 'Application Type'
-    ,e.name as 'Customer Name' 
+    ,e.name as 'Customer Name'
+    ,apd.creationDate as 'Application Date'
     FROM `myloanworld`.`applicationDetail` as apd
 	left outer join `myloanworld`.`enquiry` as e on e.enquiryId = apd.enquiryId
     join `myloanworld`.`applicationStatus` as aps on aps.applicationStatusId = apd.applicationStatusId
@@ -83,7 +84,8 @@ namespace SuperCheapCart.Controllers
                                 ApplicationStatus = reader["Application Status"].ToString(),
                                 ApplicationTypeId = Convert.ToInt16(reader["applicationTypeId"]),
                                 ApplicationType = reader["Application Type"].ToString(),
-                                CustomerName = reader["Customer Name"].ToString()
+                                CustomerName = reader["Customer Name"].ToString(),
+                                CreationDate = Convert.ToDateTime(reader["Application Date"])
                             });
                         }
                     }

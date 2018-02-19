@@ -120,7 +120,6 @@ namespace SuperCheapCart.Dto
         public string ForgotPassword([FromBody] User user)
         {
             string UserPasssword = "";
-            string UserContactNumber = "";
             string UserEmailId = "";
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {

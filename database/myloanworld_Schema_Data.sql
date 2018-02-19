@@ -239,7 +239,7 @@ CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
 
 INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addressList`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
 
-INSERT INTO `myloanworld`.`customer` (`name`,`emailId`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`, `enquiryId`) VALUES ('SaxenaVaibhav','letusknow@myloanworld.com', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL, 1);
+INSERT INTO `myloanworld`.`customer` (`name`,`emailId`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`, `enquiryId`) VALUES ('SaxenaVaibhav','vaibhav2121984@gmail.com', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL, 1);
 /*
 can be removed once testing is done
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);

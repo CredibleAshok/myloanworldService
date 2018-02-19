@@ -75,7 +75,8 @@ namespace myloanworldService.Controllers
                                 Name = reader["name"].ToString(),
                                 ContactNumber = reader["contactNumber"].ToString(),
                                 LoanAmt = ((reader["loanAmt"]) is DBNull) ? (int?)null : Convert.ToInt16(reader["loanAmt"]),
-                                Comments = reader["comments"].ToString()
+                                Comments = reader["comments"].ToString(),
+                                CreationDate = Convert.ToDateTime(reader["creationDate"])
                             });
                         }
                     }
