@@ -31,7 +31,8 @@ namespace SuperCheapCart.Dto
                             userList.Add(new User()
                             {
                                 EmailList = reader["emailList"].ToString()
-                                ,AddressList = reader["addressList"].ToString()
+                                ,
+                                AddressList = reader["addressList"].ToString()
                             });
                         }
                     }
@@ -43,7 +44,7 @@ namespace SuperCheapCart.Dto
 
         [Route("api/updateContactDetails")]
         [HttpPost]
-        public string UpdateContactDetails([FromBody] User user) 
+        public string UpdateContactDetails([FromBody] User user)
         {
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
@@ -73,7 +74,7 @@ namespace SuperCheapCart.Dto
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@_UserName", user.UserName);
                     cmd.Parameters.AddWithValue("@_AccessKeyCode", user.AccessKeyCode);
-                    
+
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -119,21 +120,26 @@ namespace SuperCheapCart.Dto
         public string ForgotPassword([FromBody] User user)
         {
             string UserPasssword = "";
+            string UserContactNumber = "";
+            string UserEmailId = "";
             using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
-                
+
                 conn.Open();
                 using (MySqlCommand cmd = new MySqlCommand("forgot_Password", conn))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@_UserName", user.UserName);
                     cmd.Parameters.AddWithValue("@_UserPasssword", "").Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("@_UserEmailId", "").Direction = ParameterDirection.Output;
+                    cmd.Parameters.AddWithValue("@_UserContactNumber", "").Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
                     UserPasssword = cmd.Parameters["@_UserPasssword"].Value.ToString();
+                    UserEmailId = cmd.Parameters["@_UserEmailId"].Value.ToString();
                 }
                 conn.Close();
             }
-            EmailSender enquiryEmailSender = new EmailSender("letusknow@myloanworld.com", "ashok.forklift@gmail.com", ("Your password is: " + UserPasssword), ("You password recovered!"));
+            EmailSender enquiryEmailSender = new EmailSender("letusknow@myloanworld.com", UserEmailId, ("Your password is: " + UserPasssword), ("You password recovered!"));
             string enquiryEmailStatus = enquiryEmailSender.SendForgotPasswordEmailViaWebApi();
             return enquiryEmailStatus != null ? "Password sent to your registered email." : "error happened.";
         }
