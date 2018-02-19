@@ -583,9 +583,14 @@ USE `myloanworld`$$
 CREATE PROCEDURE `forgot_Password`(
 IN _UserName varchar(50)
 ,OUT _UserPasssword varchar(50)
+,OUT _UserEmailId varchar(50)
+,OUT _UserContactNumber varchar(50)
 )
 BEGIN
-SELECT mlwu.accessKeyCode INTO _UserPasssword FROM  `myloanworld`.`myLoanWorldUser` as mlwu 
+SELECT mlwu.accessKeyCode, c.emailId, e.contactNumber INTO _UserPasssword, _UserEmailId ,_UserContactNumber
+FROM  `myloanworld`.`myLoanWorldUser` as mlwu 
+join `myloanworld`.`enquiry` as e on e.enquiryId = mlwu.enquiryId
+join `myloanworld`.`customer` as c on c.enquiryId= mlwu.enquiryId
 where mlwu.userName = _UserName; 
 END$$
 
