@@ -131,7 +131,7 @@ CREATE TABLE `myloanworld`.`customer` (
   `homeContact` varchar(25) DEFAULT NULL,
   `officeContact` varchar(25) DEFAULT NULL,
   `otherContact` varchar(25) DEFAULT NULL,
-  `sex` tinyint(1) DEFAULT NULL,
+  `SexId` INT DEFAULT NULL,
   `loanAmt` DOUBLE NULL,
   `accessKeyCode` varchar(100) NULL COMMENT 'This column does not need to be here',
   `validFrom` datetime DEFAULT NULL,
@@ -206,13 +206,13 @@ CREATE TABLE `myloanworld`.`roleType` (
 PRIMARY KEY (`roleTypeId`)) ENGINE = InnoDB;
 
 CREATE TABLE `myloanworld`.`maritalStatus` ( 
-`maritalStatusId` INT NOT NULL AUTO_INCREMENT , 
+`MaritalStatusId` INT NOT NULL AUTO_INCREMENT , 
 `Name` VARCHAR(100) NOT NULL , 
 `validTo` DATETIME NULL, 
 `validFrom` DATETIME NULL ,
 `updatedDate` datetime NULL,
 `updatedBy` varchar(100) NULL,
-PRIMARY KEY (`maritalStatusId`)) ENGINE = InnoDB;
+PRIMARY KEY (`MaritalStatusId`)) ENGINE = InnoDB;
 
 CREATE TABLE `myloanworld`.`contactDetails` ( 
 `contactDetailsId` INT NOT NULL AUTO_INCREMENT , 
@@ -239,7 +239,7 @@ CONSTRAINT fk_customerRoleType_customerId FOREIGN KEY (`customerId`)
 
 INSERT INTO `myloanworld`.`contactDetails` (`emailList`, `addressList`) VALUES ('info@myloanworld.com; vaibhav2121984@gmail.com', 'B-538 3rd Floor Nehru ground NIT Faridabad');
 
-INSERT INTO `myloanworld`.`customer` (`name`,`emailId`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`, `enquiryId`) VALUES ('SaxenaVaibhav','vaibhav2121984@gmail.com', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL, 1);
+INSERT INTO `myloanworld`.`customer` (`name`,`emailId`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `SexId`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`, `enquiryId`) VALUES ('SaxenaVaibhav','vaibhav2121984@gmail.com', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL, 1);
 /*
 can be removed once testing is done
 INSERT INTO `myloanworld`.`customer` (`name`, `homeAddress`, `officeAddress`, `homeContact`, `officeContact`, `otherContact`, `sex`, `loanAmt`, `accessKeyCode`, `validFrom`, `validTo`) VALUES ('TestCustomer2', 'TestHomeAdd', 'TestofficeAdd', '98765432345', '98765432345', '98765432345', '0', '123432', '1232131', NULL, NULL);
@@ -492,6 +492,8 @@ IN _FirstName varchar(100)
 ,IN _ApplicationTypeId INT
 ,IN _Comments varchar(200)
 ,IN _CreatedBy varchar(100)
+,IN _SexId INT
+,IN _MaritalStatusId INT
 )
 BEGIN
 update `myloanworld`.`customer` 
@@ -501,7 +503,9 @@ set `FirstName` = _FirstName
 ,`homeAddress` = _HomeAddress
 ,`officeAddress` = _OfficeAddress
 ,`homeContact` =_HomeContact
-,`officeContact` = _HomeContact;
+,`officeContact` = _HomeContact
+,`SexId` =_SexId
+,`MaritalStatusId` =_MaritalStatusId;
 END$$
 
 DELIMITER ;
@@ -523,6 +527,8 @@ select
 ,`MiddleName` as 'Middle Name'
 ,`LastName` as 'Last Name'
 ,`emailId` as 'EmailId'
+,`SexId` as 'Sex Id'
+,`MaritalStatusId` as 'Marital Status Id'
 from myloanworld.customer
 WHERE `enquiryId` = _EnquiryId;
 END$$

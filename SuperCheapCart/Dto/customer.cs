@@ -15,7 +15,7 @@ namespace myloanworldService.Dto
         public string HomeContact { get; set; }
         public string OfficeContact { get; set; }
         public string OtherContact { get; set; }
-        public bool Sex { get; set; }
+        public int? SexId { get; set; }
         public double LoanAmt { get; set; }
         public string AccessKeyCode { get; set; }
         public DateTime ValidFrom { get; set; }
@@ -31,7 +31,7 @@ namespace myloanworldService.Dto
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public int MaritalStatusId { get; set; }
+        public int? MaritalStatusId { get; set; }
         public string MotherName { get; set; }
         public string FatherName { get; set; }
         public string OtherPersonal { get; set; }

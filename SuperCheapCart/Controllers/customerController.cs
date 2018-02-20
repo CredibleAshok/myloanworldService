@@ -68,7 +68,9 @@ namespace SuperCheapCart.Controllers
                                 FirstName = reader["First Name"].ToString(),
                                 MiddleName = reader["Middle Name"].ToString(),
                                 LastName = reader["Last Name"].ToString(),
-                                EnquiryId = Convert.ToInt16(reader["Enquiry Id"])
+                                EnquiryId = Convert.ToInt16(reader["Enquiry Id"]),
+                                SexId = ((reader["Sex Id"]) is DBNull) ? (int?)null : Convert.ToInt16(reader["Sex Id"]),
+                                MaritalStatusId = ((reader["Marital Status Id"]) is DBNull) ? (int?)null : Convert.ToInt16(reader["Marital Status Id"]),
                             });
                         }
                     }
@@ -106,6 +108,9 @@ namespace SuperCheapCart.Controllers
                     cmd.Parameters.AddWithValue("@_Comments", customer.Comments);
                     cmd.Parameters.AddWithValue("@_CreatedBy", customer.CreatedBy);
                     cmd.Parameters.AddWithValue("@_CustomerId", customer.CustomerId);
+                    cmd.Parameters.AddWithValue("@_SexId", customer.SexId);
+                    cmd.Parameters.AddWithValue("@_MaritalStatusId", customer.MaritalStatusId);
+                    
                     cmd.ExecuteNonQuery();
                 }
                 conn.Close();
