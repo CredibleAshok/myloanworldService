@@ -17,7 +17,8 @@ CREATE TABLE `myloanworld`.`menus` ( `menuId` INT NOT NULL AUTO_INCREMENT ,
 `name` VARCHAR(100) NOT NULL ,
 `sortOrder` int NULL ,
 `parentMenu` int NULL ,
-`isManagement` bool not NULL ,
+`isManagement` bool not NULL,
+`roleId` int NULL,
 `href` VARCHAR(100) NULL ,
 `icon` VARCHAR(100) NULL ,
 `sref` VARCHAR(100) NULL ,
@@ -28,12 +29,12 @@ CREATE TABLE `myloanworld`.`menus` ( `menuId` INT NOT NULL AUTO_INCREMENT ,
 `updatedBy` varchar(100) NULL,
 PRIMARY KEY (`menuId`)) ENGINE = InnoDB;
 
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Applications', '1', 'home', 'allApplications');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('View Enquiries', '1', 'home', 'enquiries');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Application Status', '1', 'home', 'maintainApplicationStatus');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Maintain Products', '1', 'home', 'maintainProducts');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('logOff', '1', 'home', 'logOff');
-INSERT INTO `myloanworld`.`menus` (`name`, `isManagement`, `icon`, `sref`) VALUES ('Manage Contact Details', '1', 'home', 'contactDetails');
+INSERT INTO `myloanworld`.`menus` (`sortOrder`, `name`, `isManagement`, `icon`, `sref`) VALUES (1, 'View Applications', '1', 'home', 'allApplications');
+INSERT INTO `myloanworld`.`menus` (`sortOrder`, `name`, `isManagement`, `icon`, `sref`) VALUES (2, 'View Enquiries', '1', 'home', 'enquiries');
+INSERT INTO `myloanworld`.`menus` (`sortOrder`, `roleId`, `name`, `isManagement`, `icon`, `sref`) VALUES (3, 1, 'Maintain Application Status', '1', 'home', 'maintainApplicationStatus');
+INSERT INTO `myloanworld`.`menus` (`sortOrder`, `roleId`, `name`, `isManagement`, `icon`, `sref`) VALUES (4, 1, 'Maintain Products', '1', 'home', 'maintainProducts');
+INSERT INTO `myloanworld`.`menus` (`sortOrder`, `roleId`, `name`, `isManagement`, `icon`, `sref`) VALUES (5, 1, 'Manage Contact Details', '1', 'home', 'contactDetails');
+INSERT INTO `myloanworld`.`menus` (`sortOrder`, `name`, `isManagement`, `icon`, `sref`) VALUES (6, 'logOff', '1', 'home', 'logOff');
 
 INSERT INTO `myloanworld`.`applicationType` (`name`, `descText`, `href`,`icon`, `sref`,`localhref`, `validFrom`, `validTo`) VALUES ('Credit Card', 'At My Loan World we understand that “life happens” and that our bank accounts are often unprepared for unexpected financial needs. From medical emergencies to happy events like weddings, My Loan World’s consumer business focuses on providing unsecured' ,'myloanworld.com/home','home','homeloan','app/pages/home.html','2018-01-08 00:00:00', NULL);
 
@@ -466,7 +467,19 @@ END$$
 
 DELIMITER ;
 
+DELIMITER $$
+CREATE  PROCEDURE `get_menusByRole`(
+IN _RoleId int
+)
+BEGIN
+	SELECT m.`name` as 'Menu Name', m.isManagement as 'Is Management', 
+    m.icon as 'Icon' ,m.sref
+	FROM `myloanworld`.`menus` as m
+	where m.roleId = _RoleId or m.roleId is null
+	order by m.sortOrder;
+END$$
 
+DELIMITER ;
 
 /* CALL `myloanworld`.`get_ApplicationByIdWhere`(
 'apd.applicationId = 1');

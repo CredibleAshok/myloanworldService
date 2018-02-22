@@ -13,40 +13,40 @@ namespace SuperCheapCart.Controllers
     public class MenusController : ApiController
     {
         ConnectionMaker connection = new ConnectionMaker();
+
         [Route("api/getMenusList")]
         [HttpGet]
-        public IList<Menus> getMenusList()
+        public IList<Menus> GetMenusList([FromUri] int roleId)
         {
             List<Menus> menusList = new List<Menus>();
-            string query = @"SELECT * FROM myloanworld.menus";
-            try
+            using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
             {
-                using (MySqlConnection conn = new MySqlConnection(connection.MySQLConnectionString))
+                conn.Open();
+      
+                using (MySqlCommand cmd = new MySqlCommand("get_menusByRole", conn))
                 {
-                    conn.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@_RoleId", roleId);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            menusList.Add(new Menus()
                             {
-                                menusList.Add(new Menus()
-                                {
-                                    MenuId = Convert.ToInt16(reader["menuId"]),
-                                    Name = reader["name"].ToString(),
-                                    //SortOrder = Convert.ToInt16(reader["sortOrder"]),
-                                    //ParentMenu = Convert.ToInt16(reader["parentMenu"]),
-                                    Icon = reader["icon"].ToString(),
-                                    Sref = reader["sref"].ToString()
-                                });
-                            }
+                                //MenuId = Convert.ToInt16(reader["menuId"]),
+                                Name = reader["Menu Name"].ToString(),
+                                IsManagement = Convert.ToBoolean(reader["Is Management"]),
+                                //SortOrder = Convert.ToInt16(reader["sortOrder"]),
+                                //ParentMenu = Convert.ToInt16(reader["parentMenu"]),
+                                Icon = reader["Icon"].ToString(),
+                                Sref = reader["sref"].ToString()
+                            });
                         }
                     }
-                    conn.Close();
                 }
-            }
-            catch (MySqlException ex)
-            {
+                //add into customer, create application and insert into application history
+                conn.Close();
             }
             return menusList;
         }
