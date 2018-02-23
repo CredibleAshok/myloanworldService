@@ -435,6 +435,8 @@ END$$
 
 DELIMITER;
 
+USE `myloanworld`;
+DROP procedure IF EXISTS `get_ApplicationById`;
 
 DELIMITER $$
 CREATE  PROCEDURE `get_ApplicationById`(
@@ -466,6 +468,9 @@ end if;
 END$$
 
 DELIMITER ;
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `get_menusByRole`;
 
 DELIMITER $$
 CREATE  PROCEDURE `get_menusByRole`(
@@ -574,7 +579,7 @@ END$$
 
 DELIMITER ;
 
-call `myloanworld`.`authenticate_User`('TestCustomer','Test');
+/*call `myloanworld`.`authenticate_User`('TestCustomer','Test');*/
 
 USE `myloanworld`;
 DROP procedure IF EXISTS `create_Password`;
@@ -637,6 +642,8 @@ END$$
 
 DELIMITER ;
 
+USE `myloanworld`;
+DROP procedure IF EXISTS `update_applicationType`;
 
 DELIMITER $$
 USE `myloanworld`$$
@@ -664,6 +671,9 @@ END$$
 
 DELIMITER ;
 
+USE `myloanworld`;
+DROP procedure IF EXISTS `save_applicationStatus`;
+
 DELIMITER $$
 USE `myloanworld`$$
 CREATE PROCEDURE `save_applicationStatus`(
@@ -676,6 +686,9 @@ VALUES(_Name, _UpdatedBy);
 END$$
 
 DELIMITER ;
+
+USE `myloanworld`;
+DROP procedure IF EXISTS `update_applicationStatus`;
 
 DELIMITER $$
 USE `myloanworld`$$
