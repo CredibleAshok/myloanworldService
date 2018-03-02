@@ -275,17 +275,19 @@ can be removed once testing is done
 INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('2', '1', NULL, NULL, NULL, NULL);
 INSERT INTO `myloanworld`.`customerRoleType` (`roleTypeId`, `customerId`, `validTo`, `validFrom`, `updatedDate`, `updatedBy`) VALUES ('1', '2', NULL, NULL, NULL, NULL);
 */
-UPDATE `myloanworld`.`applicationtype` SET `icon`='credit-card' WHERE `applicationTypeId`='1';
+UPDATE `myloanworld`.`applicationType` SET `icon`='credit-card' WHERE `applicationTypeId`='1';
 
-UPDATE `myloanworld`.`applicationtype` SET `icon`='home' WHERE `applicationTypeId`='4';
+UPDATE `myloanworld`.`applicationType` SET `icon`='home' WHERE `applicationTypeId`='4';
 
-UPDATE `myloanworld`.`applicationtype` SET `icon`='building' WHERE `applicationTypeId`='5';
+UPDATE `myloanworld`.`applicationType` SET `icon`='building' WHERE `applicationTypeId`='5';
 
-UPDATE `myloanworld`.`applicationtype` SET `icon`='cc-visa' WHERE `applicationTypeId`='3';
+UPDATE `myloanworld`.`applicationType` SET `icon`='cc-visa' WHERE `applicationTypeId`='3';
 
-UPDATE `myloanworld`.`applicationtype` SET `sref`='personalloan' WHERE `applicationTypeId`='3';
+UPDATE `myloanworld`.`applicationType` SET `sref`='personalloan' WHERE `applicationTypeId`='3';
 
-UPDATE `myloanworld`.`applicationtype` SET `name`='LAP', `sref`='loanAgainstProperty' WHERE `applicationTypeId`='5';
+UPDATE `myloanworld`.`applicationType` SET `name`='LAP', `sref`='loanAgainstProperty' WHERE `applicationTypeId`='5';
+UPDATE `myloanworld`.`applicationType` SET `sref`='creditCard' WHERE `applicationTypeId`='1';
+UPDATE `myloanworld`.`applicationType` SET `sref`='homeloan' WHERE `applicationTypeId`='4';
 
 
 
