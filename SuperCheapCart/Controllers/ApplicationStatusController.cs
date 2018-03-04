@@ -1,12 +1,12 @@
 ﻿using myloanworldService.common;
 using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
-using SuperCheapCart.common;
+using MyLoanWorldService.common;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
 
-namespace SuperCheapCart.Controllers
+namespace MyLoanWorldService.Controllers
 {
     public class ApplicationStatusController : ApiController
     {

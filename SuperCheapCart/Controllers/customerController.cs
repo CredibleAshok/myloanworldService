@@ -1,7 +1,7 @@
 ﻿using myloanworldService.common;
 using myloanworldService.Dto;
 using MySql.Data.MySqlClient;
-using SuperCheapCart.Dto;
+using MyLoanWorldService.Dto;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
-namespace SuperCheapCart.Controllers
+namespace MyLoanWorldService.Controllers
 {
     public class CustomerController : ApiController
     {

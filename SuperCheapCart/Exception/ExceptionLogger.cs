@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.ExceptionHandling;
 
-namespace SuperCheapCart.Exception
+namespace MyLoanWorldService.Exception
 {
     public class ExceptionLogger : IExceptionLogger
     {

@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.ExceptionHandling;
 
-namespace SuperCheapCart.Exception
+namespace MyLoanWorldService.Exception
 {
     public class OopsExceptionHandler : ExceptionHandler
     {

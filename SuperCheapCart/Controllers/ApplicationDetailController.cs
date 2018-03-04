@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
-namespace SuperCheapCart.Controllers
+namespace MyLoanWorldService.Controllers
 {
     public class ApplicationDetailController : ApiController
     {

@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Http;
 using myloanworldService.common;
 
-namespace SuperCheapCart.Controllers
+namespace MyLoanWorldService.Controllers
 {
     public class MenusController : ApiController
     {

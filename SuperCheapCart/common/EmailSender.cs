@@ -1,6 +1,6 @@
 ﻿using System.Net.Mail;
 
-namespace SuperCheapCart.common
+namespace MyLoanWorldService.common
 {
     public class EmailSender
     {

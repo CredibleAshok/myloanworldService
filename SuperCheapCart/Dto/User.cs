@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SuperCheapCart.Dto
+namespace MyLoanWorldService.Dto
 {
     public class User
     {
